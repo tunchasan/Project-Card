@@ -1,4 +1,5 @@
-﻿using ProjectCard.Game.Debug;
+﻿using ProjectCard.Core.Entity;
+using ProjectCard.Game.Debug;
 using UnityEngine;
 
 namespace ProjectCard.Game.Controller
@@ -8,12 +9,14 @@ namespace ProjectCard.Game.Controller
         [Header("Configurations")]
         [Range(11, 52)]
         [SerializeField] private int displayCardAmount = 11;
-        
+
         protected override void Initialize()
         {
-            var cards = DeckProvider.RandomCards(displayCardAmount);
+            DeckProvider = new DeckProvider();
             
-            foreach (var card in cards)
+            DeckProvider.DrawCards(displayCardAmount, out Session);
+            
+            foreach (var card in Session.Cards)
             {
                 ConditionalDebug.Log(card.ToString());
             }

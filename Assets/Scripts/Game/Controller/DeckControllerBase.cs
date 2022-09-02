@@ -6,10 +6,7 @@ namespace ProjectCard.Game.Controller
     public abstract class DeckControllerBase : MonoBehaviour
     {
         protected DeckProviderBase DeckProvider = null;
-        protected virtual void Awake()
-        {
-            DeckProvider = new DeckProvider();
-        }
+        protected SessionBase Session = null;
         protected virtual void Start()
         {
             Initialize();
