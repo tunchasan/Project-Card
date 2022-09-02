@@ -14,9 +14,9 @@ namespace ProjectCard.Game.Controller
         {
             DeckProvider = new DeckProvider();
             
-            DeckProvider.DrawCards(displayCardAmount, out Session);
+            DeckProvider.RandomCards(displayCardAmount, true);
             
-            foreach (var card in Session.Cards)
+            foreach (var card in Session.Cards())
             {
                 ConditionalDebug.Log(card.ToString());
             }

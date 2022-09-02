@@ -9,8 +9,6 @@ namespace ProjectCard.Core.Entity
         {
             Deck = new Deck();
         }
-        protected abstract IEnumerable<CardBase> RandomCards(int amount);
-        public abstract void DrawCards(int amount, out SessionBase session);
-        public abstract void DrawCards(int amount, SessionBase session);
+        public abstract IEnumerable<CardBase> RandomCards(int amount, bool useSession);
     }
 }

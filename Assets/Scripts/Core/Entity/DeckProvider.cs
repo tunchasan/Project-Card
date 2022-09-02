@@ -6,22 +6,17 @@ namespace ProjectCard.Core.Entity
 {
     public class DeckProvider : DeckProviderBase
     {
-        protected override IEnumerable<CardBase> RandomCards(int amount)
+        public override IEnumerable<CardBase> RandomCards(int amount, bool useSession)
         {
             Deck.Cards.Shuffle();
             var count = amount > DeckBase.Size ? DeckBase.Size : amount;
+            var cards = Deck.Cards.Take(count);
+
+            // Stores the data inside of the Session
+            if (useSession)
+                Session.InitializeSession(cards.ToList());
+            
             return Deck.Cards.Take(count);
-        }
-
-        public override void DrawCards(int amount, out SessionBase session)
-        {
-            session = new Session();
-            session.InitializeSession(RandomCards(amount));
-        }
-
-        public override void DrawCards(int amount, SessionBase session)
-        {
-            session.OverrideSession(RandomCards(amount).ToList());
         }
     }
 }

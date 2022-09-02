@@ -1,17 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ProjectCard.Core.Entity
 {
-    public class Session : SessionBase
+    public static class Session
     {
-        public override void InitializeSession(IEnumerable<CardBase> cards)
+        private static List<CardBase> _cards = new();
+        public static bool IsInitialized = false;
+        public static int SessionId = -1;
+        
+        public static IEnumerable<CardBase> Cards()
         {
-            Cards = cards;
+            if (IsInitialized)
+            {
+                return _cards;
+            }
+
+            throw new NullReferenceException("Session couldn't initialized!");
         }
-        public override void OverrideSession(List<CardBase> cards)
+        public static void InitializeSession(List<CardBase> cards)
         {
-            cards.Clear();
-            Cards = cards;
+            _cards.Clear();
+            _cards = cards;
+            IsInitialized = true;
+            SessionId++;
         }
     }
 }
