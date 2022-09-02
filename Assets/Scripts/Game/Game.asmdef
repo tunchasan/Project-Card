@@ -1,0 +1,16 @@
+{
+    "name": "ProjectCard-Game",
+    "rootNamespace": "ProjectCard",
+    "references": [
+        "GUID:8f61c7adffc01e541891e3b60af1eae5"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
