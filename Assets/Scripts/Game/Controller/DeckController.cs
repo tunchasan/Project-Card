@@ -13,10 +13,11 @@ namespace ProjectCard.Game.Controller
         protected override void Initialize()
         {
             DeckProvider = new DeckProvider();
+            Session = new Session();
             
-            DeckProvider.RandomCards(displayCardAmount, true);
+            DeckProvider.RandomCards(displayCardAmount, Session);
             
-            foreach (var card in Session.Cards())
+            foreach (var card in Session.Data())
             {
                 ConditionalDebug.Log(card.ToString());
             }

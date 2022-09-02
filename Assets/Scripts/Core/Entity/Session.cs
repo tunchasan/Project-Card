@@ -3,25 +3,21 @@ using System.Collections.Generic;
 
 namespace ProjectCard.Core.Entity
 {
-    public static class Session
+    public class Session : SessionBase
     {
-        private static List<CardBase> _cards = new();
-        public static bool IsInitialized = false;
-        public static int SessionId = -1;
-        
-        public static IEnumerable<CardBase> Cards()
+        public override IEnumerable<CardBase> Data()
         {
             if (IsInitialized)
             {
-                return _cards;
+                return Cards;
             }
 
             throw new NullReferenceException("Session couldn't initialized!");
         }
-        public static void InitializeSession(List<CardBase> cards)
+        public override void InitializeSession(List<CardBase> newCards)
         {
-            _cards.Clear();
-            _cards = cards;
+            Cards?.Clear();
+            Cards = newCards;
             IsInitialized = true;
             SessionId++;
         }

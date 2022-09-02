@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace ProjectCard.Core.Entity
 {
     public abstract class DeckProviderBase
@@ -9,6 +7,6 @@ namespace ProjectCard.Core.Entity
         {
             Deck = new Deck();
         }
-        public abstract IEnumerable<CardBase> RandomCards(int amount, bool useSession);
+        public abstract void RandomCards(int amount, SessionBase sessionBase);
     }
 }
