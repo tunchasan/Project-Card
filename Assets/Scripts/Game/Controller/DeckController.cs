@@ -15,41 +15,43 @@ namespace ProjectCard.Game.Controller
             Sortable = new DeckProvider();
             Session = new Session();
             
+            RequestShuffleSort();
+            
+            Display();
+            
+            RequestStraightSort();
+        }
+
+        public void RequestShuffleSort()
+        {
             Sortable.ShuffleSort(displayCardAmount, Session);
-            
-            foreach (var card in Session.Data())
-            {
-                ConditionalDebug.Log(card.ToString());
-            }
-            
-            RequestStraightSort(Session);
         }
 
-        public void RequestShuffleSort(SessionBase session)
+        public void RequestStraightSort()
         {
-            Sortable.ShuffleSort(displayCardAmount, session);
+            Sortable.StraightSort(Session);
+
+            Display();
         }
 
-        public void RequestStraightSort(SessionBase session)
+        public void RequestSameKindSort()
         {
-            Sortable.StraightSort(session);
-            
+            Sortable.SameKindSort(Session);
+        }
+
+        public void RequestSmartSort()
+        {
+            Sortable.SmartSort(Session);
+        }
+
+        public void Display()
+        {
             ConditionalDebug.Log("-----------------------------------------------------------");
             
             foreach (var card in Session.Data())
             {
                 ConditionalDebug.Log(card.ToString());
             }
-        }
-
-        public void RequestSameKindSort(SessionBase session)
-        {
-            Sortable.SameKindSort(session);
-        }
-
-        public void RequestSmartSort(SessionBase session)
-        {
-            Sortable.SmartSort(session);
         }
     }
 }

@@ -7,8 +7,8 @@ namespace ProjectCard.Core.Entity
     public static class Sorter
     {
         private static readonly Random Random = new();
-        private static readonly List<CardBase> GroupList = new();
-        private static readonly List<CardBase> UnGroupList = new();
+        private static readonly List<CardBase> GroupList = new(DeckBase.Size);
+        private static readonly List<CardBase> UnGroupList = new(DeckBase.Size);
         
         // Shuffle
         public static void SortByShuffle(this CardBase[] cards)
