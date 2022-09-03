@@ -43,12 +43,6 @@ namespace ProjectCard.Core.Entity
 
             return cards;
         }
-        // Smart
-        public static List<CardBase> SortBySmart(this List<CardBase> cards)
-        {
-            // TODO
-            return null;
-        }
 
         private static bool SortCondition(CardBase card1, CardBase card2, SortType sortType)
         {
@@ -65,6 +59,7 @@ namespace ProjectCard.Core.Entity
             var counter = 1;
             var groupPointer = 0;
             var ungroupPointer = 0;
+            var groupContainer = new GroupContainer() {Groups = new List<Group>()};
 
             for (var i = cards.Count - 1; i > 0; i--)
             {
@@ -75,16 +70,21 @@ namespace ProjectCard.Core.Entity
                 {
                     counter++;
                 }
-
+                
                 else
                 {
                     if (counter >= 3)
                     {
+                        var group = new Group {Type = sortType, Cards = new List<CardBase>(counter)};
+                        
                         for (var j = 0; j < counter; j++)
                         {
                             Group[groupPointer + j] = UnGroup[j];
+                            group.Cards.Add(UnGroup[j]);
                         }
                         
+                        groupContainer.Groups.Add(group);
+
                         cards.RemoveRange(i, counter);
                         ungroupPointer = 0;
                         groupPointer += counter;
@@ -99,10 +99,41 @@ namespace ProjectCard.Core.Entity
                 }
             }
             
+            if (SortCondition(cards[1], cards[0], sortType))
+            {
+                UnGroup[ungroupPointer] = cards[0];
+                
+                if (counter >= 3)
+                {
+                    var group = new Group {Type = sortType, Cards = new List<CardBase>(counter)};
+                        
+                    for (var j = 0; j < counter; j++)
+                    {
+                        Group[groupPointer + j] = UnGroup[j];
+                        group.Cards.Add(UnGroup[j]);
+                    }
+                        
+                    groupContainer.Groups.Add(group);
+            
+                    cards.RemoveRange(0, counter);
+                    groupPointer += counter;
+                }
+            }
+
+            var newGroup = new Group {Type = SortType.None, Cards = new List<CardBase>(cards)};
+            groupContainer.Groups.Add(newGroup);
+
             for (var i = 0; i < groupPointer; i++)
             {
                 cards.Insert(0, Group[i]);
             }
+        }
+        
+        // Smart
+        public static List<CardBase> SortBySmart(this List<CardBase> cards)
+        {
+            // TODO
+            return null;
         }
     }
 }

@@ -27,6 +27,7 @@ namespace ProjectCard.Core.Utilities
 
     public enum SortType
     {
+        None,
         Shuffle,
         Straight,
         SameKind,
