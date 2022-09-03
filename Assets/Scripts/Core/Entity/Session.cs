@@ -23,7 +23,6 @@ namespace ProjectCard.Core.Entity
         
         public override void ValidateSession(List<CardBase> newCards)
         {
-            Cards?.Clear();
             Cards = newCards;
             IsInitialized = true;
             SessionId++;

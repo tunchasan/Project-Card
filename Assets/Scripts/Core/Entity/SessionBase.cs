@@ -4,7 +4,7 @@ namespace ProjectCard.Core.Entity
 {
     public abstract class SessionBase
     {
-        protected List<CardBase> Cards = new();
+        protected List<CardBase> Cards = new(DeckBase.Size);
         public bool IsInitialized { protected set; get; }
         public int SessionId { protected set; get; }
 

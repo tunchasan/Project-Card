@@ -345,4 +345,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13ffea865478471181fee3716b9d6c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayCardAmount: 18
+  displayCardAmount: 39

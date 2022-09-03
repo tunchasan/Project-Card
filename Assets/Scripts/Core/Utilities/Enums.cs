@@ -24,4 +24,12 @@ namespace ProjectCard.Core.Utilities
         Heart,
         Club,
     }
+
+    public enum SortType
+    {
+        Shuffle,
+        Straight,
+        SameKind,
+        Smart
+    }
 }

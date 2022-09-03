@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectCard.Core.Entity
 {
@@ -10,19 +11,19 @@ namespace ProjectCard.Core.Entity
             var count = amount > DeckBase.Size ? DeckBase.Size : amount;
             var cards = Deck.Cards.Take(count);
             // Stores the data inside of the Session
-            session.ValidateSession(cards.ToList());
+            session.ValidateSession(new List<CardBase>(cards));
         }
 
         public override void StraightSort(SessionBase session)
         {
-            var result = Sorter.SortByStraight(session.Data());
+            var result = session.Data().SortByStraight();
             session.ValidateSession(result);
         }
 
         public override void SameKindSort(SessionBase session)
         {
-            session.Data().SortByKind();
-            session.ValidateSession();
+            var result = session.Data().SortByKind();
+            session.ValidateSession(result);
         }
 
         public override void SmartSort(SessionBase session)
