@@ -15,8 +15,8 @@ namespace ProjectCard.Core.Entity
 
         public override void StraightSort(SessionBase session)
         {
-            session.Data().SortByStraight();
-            session.ValidateSession();
+            var result = Sorter.SortByStraight(session.Data());
+            session.ValidateSession(result);
         }
 
         public override void SameKindSort(SessionBase session)

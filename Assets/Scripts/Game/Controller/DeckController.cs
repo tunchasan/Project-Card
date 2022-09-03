@@ -21,6 +21,8 @@ namespace ProjectCard.Game.Controller
             {
                 ConditionalDebug.Log(card.ToString());
             }
+            
+            RequestStraightSort(Session);
         }
 
         public void RequestShuffleSort(SessionBase session)
@@ -31,6 +33,13 @@ namespace ProjectCard.Game.Controller
         public void RequestStraightSort(SessionBase session)
         {
             Sortable.StraightSort(session);
+            
+            ConditionalDebug.Log("-----------------------------------------------------------");
+            
+            foreach (var card in Session.Data())
+            {
+                ConditionalDebug.Log(card.ToString());
+            }
         }
 
         public void RequestSameKindSort(SessionBase session)
