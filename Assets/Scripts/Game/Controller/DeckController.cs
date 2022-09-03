@@ -1,4 +1,5 @@
-﻿using ProjectCard.Core.Entity;
+﻿using System.Collections.Generic;
+using ProjectCard.Core.Entity;
 using ProjectCard.Game.Debug;
 using UnityEngine;
 
@@ -12,16 +13,26 @@ namespace ProjectCard.Game.Controller
 
         protected override void Initialize()
         {
-            Sortable = new DeckProvider();
+            DeckProvider = new DeckProvider();
             Session = new Session();
             
-            RequestShuffleSort();
+            DrawCertainCards();
+        }
+        
+        [ContextMenu("DrawCertainCards")]
+        public void DrawCertainCards()
+        {
+            var certainCards = new List<int> {26, 1, 17, 29, 0, 15, 42, 3, 13, 2, 16};
+            
+            DeckProvider.DrawCertainCards(certainCards, Session);
+            
+            Display();
         }
 
-        [ContextMenu("RequestShuffleSort")]
-        public void RequestShuffleSort()
+        [ContextMenu("DrawRandomCards")]
+        public void DrawRandomCards()
         {
-            Sortable.ShuffleSort(displayCardAmount, Session);
+            DeckProvider.DrawRandomCards(displayCardAmount, Session);
             
             Display();
         }
@@ -29,7 +40,7 @@ namespace ProjectCard.Game.Controller
         [ContextMenu("RequestStraightSort")]
         public void RequestStraightSort()
         {
-            Sortable.StraightSort(Session);
+            DeckProvider.StraightSort(Session);
 
             Display();
         }
@@ -37,7 +48,7 @@ namespace ProjectCard.Game.Controller
         [ContextMenu("RequestSameKindSort")]
         public void RequestSameKindSort()
         {
-            Sortable.SameKindSort(Session);
+            DeckProvider.SameKindSort(Session);
             
             Display();
         }
@@ -45,7 +56,7 @@ namespace ProjectCard.Game.Controller
         [ContextMenu("RequestSmartSort")]
         public void RequestSmartSort()
         {
-            Sortable.SmartSort(Session);
+            DeckProvider.SmartSort(Session);
             
             Display();
         }
