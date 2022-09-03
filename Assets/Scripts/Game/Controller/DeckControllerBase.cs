@@ -5,7 +5,7 @@ namespace ProjectCard.Game.Controller
 {
     public abstract class DeckControllerBase : MonoBehaviour
     {
-        protected DeckProviderBase DeckProvider = null;
+        protected ISortable Sortable = null;
         protected SessionBase Session = null;
         protected virtual void Start()
         {

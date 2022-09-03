@@ -5,7 +5,7 @@ namespace ProjectCard.Core.Entity
 {
     public class Session : SessionBase
     {
-        public override IEnumerable<CardBase> Data()
+        public override List<CardBase> Data()
         {
             if (IsInitialized)
             {
@@ -14,7 +14,14 @@ namespace ProjectCard.Core.Entity
 
             throw new NullReferenceException("Session couldn't initialized!");
         }
-        public override void InitializeSession(List<CardBase> newCards)
+        
+        public override void ValidateSession()
+        {
+            IsInitialized = true;
+            SessionId++;
+        }
+        
+        public override void ValidateSession(List<CardBase> newCards)
         {
             Cards?.Clear();
             Cards = newCards;

@@ -12,15 +12,35 @@ namespace ProjectCard.Game.Controller
 
         protected override void Initialize()
         {
-            DeckProvider = new DeckProvider();
+            Sortable = new DeckProvider();
             Session = new Session();
             
-            DeckProvider.RandomCards(displayCardAmount, Session);
+            Sortable.ShuffleSort(displayCardAmount, Session);
             
             foreach (var card in Session.Data())
             {
                 ConditionalDebug.Log(card.ToString());
             }
+        }
+
+        public void RequestShuffleSort(SessionBase session)
+        {
+            Sortable.ShuffleSort(displayCardAmount, session);
+        }
+
+        public void RequestStraightSort(SessionBase session)
+        {
+            Sortable.StraightSort(session);
+        }
+
+        public void RequestSameKindSort(SessionBase session)
+        {
+            Sortable.SameKindSort(session);
+        }
+
+        public void RequestSmartSort(SessionBase session)
+        {
+            Sortable.SmartSort(session);
         }
     }
 }

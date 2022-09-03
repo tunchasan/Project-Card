@@ -8,7 +8,8 @@ namespace ProjectCard.Core.Entity
         public bool IsInitialized { protected set; get; }
         public int SessionId { protected set; get; }
 
-        public abstract IEnumerable<CardBase> Data();
-        public abstract void InitializeSession(List<CardBase> cards);
+        public abstract List<CardBase> Data();
+        public abstract void ValidateSession();
+        public abstract void ValidateSession(List<CardBase> cards);
     }
 }
