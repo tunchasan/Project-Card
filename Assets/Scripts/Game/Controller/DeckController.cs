@@ -16,17 +16,17 @@ namespace ProjectCard.Game.Controller
             Session = new Session();
             
             RequestShuffleSort();
-            
-            Display();
-            
-            RequestStraightSort();
         }
 
+        [ContextMenu("RequestShuffleSort")]
         public void RequestShuffleSort()
         {
             Sortable.ShuffleSort(displayCardAmount, Session);
+            
+            Display();
         }
 
+        [ContextMenu("RequestStraightSort")]
         public void RequestStraightSort()
         {
             Sortable.StraightSort(Session);
@@ -34,16 +34,23 @@ namespace ProjectCard.Game.Controller
             Display();
         }
 
+        [ContextMenu("RequestSameKindSort")]
         public void RequestSameKindSort()
         {
             Sortable.SameKindSort(Session);
+            
+            Display();
         }
 
+        [ContextMenu("RequestSmartSort")]
         public void RequestSmartSort()
         {
             Sortable.SmartSort(Session);
+            
+            Display();
         }
 
+        [ContextMenu("Display")]
         public void Display()
         {
             ConditionalDebug.Log("-----------------------------------------------------------");
