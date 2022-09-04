@@ -8,8 +8,8 @@ namespace ProjectCard.Core.Entity
     public static class Sorter
     {
         private static readonly Random Random = new();
-        private static readonly CardBase[] Group = new CardBase[DeckBase.Size];
-        private static readonly CardBase[] UnGroup = new CardBase[DeckBase.Size];
+        private static readonly CardBase[] TempGroup = new CardBase[DeckBase.Size];
+        private static readonly CardBase[] TempUnGroup = new CardBase[DeckBase.Size];
         
         // Shuffle
         public static void SortByShuffle(this CardBase[] cards)
@@ -61,12 +61,12 @@ namespace ProjectCard.Core.Entity
             var ungroupPointer = 0;
             var groupContainer = new GroupContainer() {Groups = new List<Group>()};
 
-            for (var i = cards.Count - 1; i > 0; i--)
+            for (var i = cards.Count - 1; i >= 0; i--)
             {
-                UnGroup[ungroupPointer] = cards[i];
+                TempUnGroup[ungroupPointer] = cards[i];
                 ungroupPointer++;
 
-                if (SortCondition(cards[i], cards[i - 1], sortType))
+                if (i != 0 && SortCondition(cards[i], cards[i - 1], sortType))
                 {
                     counter++;
                 }
@@ -79,8 +79,8 @@ namespace ProjectCard.Core.Entity
                         
                         for (var j = 0; j < counter; j++)
                         {
-                            Group[groupPointer + j] = UnGroup[j];
-                            group.Cards.Add(UnGroup[j]);
+                            TempGroup[groupPointer + j] = TempUnGroup[j];
+                            group.Cards.Add(TempUnGroup[j]);
                         }
                         
                         groupContainer.Groups.Add(group);
@@ -98,34 +98,13 @@ namespace ProjectCard.Core.Entity
                     }
                 }
             }
-            
-            if (SortCondition(cards[1], cards[0], sortType))
-            {
-                UnGroup[ungroupPointer] = cards[0];
-                
-                if (counter >= 3)
-                {
-                    var group = new Group {Type = sortType, Cards = new List<CardBase>(counter)};
-                        
-                    for (var j = 0; j < counter; j++)
-                    {
-                        Group[groupPointer + j] = UnGroup[j];
-                        group.Cards.Add(UnGroup[j]);
-                    }
-                        
-                    groupContainer.Groups.Add(group);
-            
-                    cards.RemoveRange(0, counter);
-                    groupPointer += counter;
-                }
-            }
 
             var newGroup = new Group {Type = SortType.None, Cards = new List<CardBase>(cards)};
             groupContainer.Groups.Add(newGroup);
 
             for (var i = 0; i < groupPointer; i++)
             {
-                cards.Insert(0, Group[i]);
+                cards.Insert(0, TempGroup[i]);
             }
         }
         
