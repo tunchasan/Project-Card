@@ -23,12 +23,12 @@ namespace ProjectCard.Core.Entity
         public override void StraightSort(SessionBase session)
         {
             var result = session.Data().SortByStraight();
-            session.ValidateSession(result);
+            session.ValidateSession(result.GetAllCards());
         }
         public override void SameKindSort(SessionBase session)
         {
             var result = session.Data().SortByKind();
-            session.ValidateSession(result);
+            session.ValidateSession(result.GetAllCards());
         }
         public override void SmartSort(SessionBase session)
         {

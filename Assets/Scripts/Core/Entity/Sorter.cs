@@ -9,8 +9,6 @@ namespace ProjectCard.Core.Entity
     public static class Sorter
     {
         private static readonly Random Random = new();
-        private static readonly CardBase[] TempGroup = new CardBase[DeckBase.Size];
-        private static readonly CardBase[] TempUnGroup = new CardBase[DeckBase.Size];
         
         // Shuffle
         public static void SortByShuffle(this CardBase[] cards)
@@ -24,42 +22,39 @@ namespace ProjectCard.Core.Entity
                 cards[k] = temp;
             }
         }
-        // 1-2-3 = Generates sorted List
-        public static List<CardBase> SortByStraight(this List<CardBase> cards)
-        {
-            // Time complexity : average O(nlogn) : worst-case O(n^2) - QuickSort
-            cards = cards.OrderBy(card => card.Id).ToList();
-
-            cards.ProcessCards(SortType.Straight);
-
-            return cards;
-        }
+        
         // 1-2-3 = Generates sorted groupContainer which contains sub groups separately
-        public static void SortByStraight(this List<CardBase> cards, out GroupContainer container)
+        public static GroupContainer SortByStraight(this List<CardBase> cards)
         {
             // Time complexity : average O(nlogn) : worst-case O(n^2) - QuickSort
             cards = cards.OrderBy(card => card.Id).ToList();
 
-            container = cards.ProcessGroups(SortType.Straight);
+            return cards.ProcessGroups(SortType.Straight);
         }
-        // 7-7-7 = Generates sorted List
-        public static List<CardBase> SortByKind(this List<CardBase> cards)
-        {
-            // Time complexity : average O(nlogn) : worst-case O(n^2) - QuickSort
-            cards.Sort((a, b) => a.Kind.CompareTo(b.Kind));
-
-            cards.ProcessCards(SortType.SameKind);
-
-            return cards;
-        }
+        
         // 7-7-7 = Generates sorted groupContainer which contains sub groups separately
-        public static void SortByKind(this List<CardBase> cards, out GroupContainer container)
+        public static GroupContainer SortByKind(this List<CardBase> cards)
         {
             // Time complexity : average O(nlogn) : worst-case O(n^2) - QuickSort
             cards.Sort((a, b) => a.Kind.CompareTo(b.Kind));
 
-            container = cards.ProcessGroups(SortType.SameKind);
+            return cards.ProcessGroups(SortType.SameKind);
         }
+        
+        // Smart
+        public static List<CardBase> SortBySmart(this List<CardBase> cards)
+        {
+            var bestResult = new GroupContainer{Score = 99};
+            
+            var straightGroupContainer = SortByStraight(cards);
+            var sameKindGroupContainer = SortByKind(cards);
+
+            bestResult = FindBestResult(bestResult.Score, sameKindGroupContainer, SortType.Straight);
+            bestResult = FindBestResult(bestResult.Score, straightGroupContainer, SortType.SameKind);
+
+            return bestResult.GetAllCards();
+        }
+        
         private static bool SortCondition(CardBase card1, CardBase card2, SortType sortType)
         {
             return sortType switch
@@ -69,6 +64,7 @@ namespace ProjectCard.Core.Entity
                 _ => false
             };
         }
+        
         private static bool SortCondition(int index, int groupLength, SortType sortType)
         {
             return sortType switch
@@ -78,50 +74,7 @@ namespace ProjectCard.Core.Entity
                 _ => false
             };
         }
-        private static void ProcessCards(this List<CardBase> cards, SortType sortType)
-        {
-            var counter = 1;
-            var groupPointer = 0;
-            var ungroupPointer = 0;
-
-            for (var i = cards.Count - 1; i >= 0; i--)
-            {
-                TempUnGroup[ungroupPointer] = cards[i];
-                ungroupPointer++;
-
-                if (i != 0 && SortCondition(cards[i], cards[i - 1], sortType))
-                {
-                    counter++;
-                }
-                
-                else
-                {
-                    if (counter >= 3)
-                    {
-                        for (var j = 0; j < counter; j++)
-                        {
-                            TempGroup[groupPointer + j] = TempUnGroup[j];
-                        }
-                        
-                        cards.RemoveRange(i, counter);
-                        ungroupPointer = 0;
-                        groupPointer += counter;
-                        counter = 1;
-                    }
-
-                    else
-                    {
-                        ungroupPointer = 0;
-                        counter = 1;
-                    }
-                }
-            }
-
-            for (var i = 0; i < groupPointer; i++)
-            {
-                cards.Insert(0, TempGroup[i]);
-            }
-        }
+        
         private static GroupContainer ProcessGroups(this List<CardBase> cards, SortType sortType)
         {
             var counter = 1;
@@ -162,19 +115,7 @@ namespace ProjectCard.Core.Entity
             groupContainer.ValidateScore();
             return groupContainer;
         }
-        // Smart
-        public static List<CardBase> SortBySmart(this List<CardBase> cards)
-        {
-            var bestResult = new GroupContainer{Score = 99};
-            
-            SortByStraight(cards, out var straightGroupContainer);
-            SortByKind(cards, out var sameKindGroupContainer);
-
-            bestResult = FindBestResult(bestResult.Score, sameKindGroupContainer, SortType.Straight);
-            bestResult = FindBestResult(bestResult.Score, straightGroupContainer, SortType.SameKind);
-
-            return bestResult.GetAllCards();
-        }
+        
         private static GroupContainer FindBestResult(int bestScore, GroupContainer processingGroupContainer, SortType sortType)
         {
             var bestResult = new GroupContainer();
@@ -206,15 +147,16 @@ namespace ProjectCard.Core.Entity
 
             return bestResult;
         }
+        
         private static void SortForBestResult(List<CardBase> cards, out GroupContainer groupContainer, SortType sortType)
         {
             switch (sortType)
             {
                 case SortType.Straight:
-                    SortByStraight(cards, out groupContainer);
+                    groupContainer = SortByStraight(cards);
                     break;
                 case SortType.SameKind:
-                    SortByKind(cards, out groupContainer);
+                    groupContainer = SortByKind(cards);
                     break;
                 default:
                     throw new NotSupportedException($"{sortType} isn't supported by SortBy method!");
