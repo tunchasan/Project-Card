@@ -122,14 +122,12 @@ namespace ProjectCard.Core.Entity
         private static GroupContainer ProcessGroups(this List<CardBase> cards, SortType sortType)
         {
             var counter = 1;
-            var groupPointer = 0;
-            var ungroupPointer = 0;
             var groupContainer = new GroupContainer() {Groups = new List<Group>()};
+            var unGroup = new Group {Type = SortType.None, Cards = new List<CardBase>()};
 
             for (var i = cards.Count - 1; i >= 0; i--)
             {
-                TempUnGroup[ungroupPointer] = cards[i];
-                ungroupPointer++;
+                unGroup.Cards.Add(cards[i]);
 
                 if (i != 0 && SortCondition(cards[i], cards[i - 1], sortType))
                 {
@@ -141,24 +139,15 @@ namespace ProjectCard.Core.Entity
                     if (counter >= 3)
                     {
                         var group = new Group {Type = sortType, Cards = new List<CardBase>(counter)};
-                        
-                        for (var j = 0; j < counter; j++)
-                        {
-                            TempGroup[groupPointer + j] = TempUnGroup[j];
-                            group.Cards.Add(TempUnGroup[j]);
-                        }
-                        
+                        group.Cards.AddRange(unGroup.Cards);
                         groupContainer.Groups.Add(group);
-
                         cards.RemoveRange(i, counter);
-                        ungroupPointer = 0;
-                        groupPointer += counter;
                         counter = 1;
                     }
 
                     else
                     {
-                        ungroupPointer = 0;
+                        unGroup.Cards.Clear();
                         counter = 1;
                     }
                 }
@@ -166,12 +155,6 @@ namespace ProjectCard.Core.Entity
 
             var newGroup = new Group {Type = SortType.None, Cards = new List<CardBase>(cards)};
             groupContainer.Groups.Add(newGroup);
-            
-            for (var i = 0; i < groupPointer; i++)
-            {
-                cards.Insert(0, TempGroup[i]);
-            }
-
             return groupContainer;
         }
 
@@ -180,7 +163,7 @@ namespace ProjectCard.Core.Entity
         {
             SortByStraight(cards, out var straightGroupContainer);
             SortByKind(cards, out var sameKindGroupContainer);
-            return null;
+            return cards;
         }
     }
 }
