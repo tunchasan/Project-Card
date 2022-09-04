@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ProjectCard.Core.Utilities;
-using UnityEngine;
 
 namespace ProjectCard.Core.Entity
 {
@@ -37,16 +35,5 @@ namespace ProjectCard.Core.Entity
             var result = session.Data().SortBySmart();
             session.ValidateSession(result);
         }
-    }
-
-    public struct GroupContainer
-    {
-        public List<Group> Groups;
-    }
-
-    public struct Group
-    {
-        public SortType Type;
-        public List<CardBase> Cards;
     }
 }
