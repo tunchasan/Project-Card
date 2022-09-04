@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ProjectCard.Core.Utilities;
+using UnityEngine;
 using Random = System.Random;
 
 namespace ProjectCard.Core.Entity
@@ -138,6 +139,7 @@ namespace ProjectCard.Core.Entity
                 {
                     if (counter >= 3)
                     {
+                        unGroup.Cards.Reverse();
                         var group = new Group {Type = sortType, Score = -1, Cards = new List<CardBase>(counter)};
                         group.Cards.AddRange(unGroup.Cards);
                         groupContainer.Groups.Add(group);
@@ -164,7 +166,85 @@ namespace ProjectCard.Core.Entity
         {
             SortByStraight(cards, out var straightGroupContainer);
             SortByKind(cards, out var sameKindGroupContainer);
-            return cards;
+            var groupContainers = new List<GroupContainer>() {straightGroupContainer, sameKindGroupContainer};
+
+            var sameKindGroups = sameKindGroupContainer.Groups;
+            var sameKindGroupLength = sameKindGroups.Count;
+            var sameKindRemainedGroup = sameKindGroupContainer.GetRemainedGroup();
+            for (var i = 0; i < sameKindGroupLength; i++)
+            {
+                if (sameKindGroups[i].Cards.Count > 3 && sameKindGroups[i].Type != SortType.None)
+                {
+                    var groupCards = sameKindGroups[i].Cards;
+                    for (var j = 0; j < groupCards.Count; j++)
+                    {
+                        var newList = new List<CardBase>(sameKindRemainedGroup.Cards) {groupCards[j]};
+                        SortByStraight(newList, out var newGroupContainer);
+                        newGroupContainer.Groups.AddRange(sameKindGroups);
+                        newGroupContainer.RemoveGroup(sameKindRemainedGroup);
+                        groupContainers.Add(newGroupContainer);
+                    }
+                }
+            }
+
+            var straightGroups = straightGroupContainer.Groups;
+            var straightGroupLength = straightGroups.Count;
+            var straightRemainedGroup = straightGroupContainer.GetRemainedGroup();
+            for (var i = 0; i < straightGroupLength; i++)
+            {
+                if (straightGroups[i].Cards.Count > 3 && straightGroups[i].Type != SortType.None)
+                {
+                    var groupCards = straightGroups[i].Cards;
+                    for (var j = 0; j < groupCards.Count; j++)
+                    {
+                        if (j == 0 || j == straightGroupLength - 1)
+                        {
+                            var newList = new List<CardBase>(straightRemainedGroup.Cards) {groupCards[j]};
+                            SortByKind(newList, out var newGroupContainer);
+                            newGroupContainer.Groups.AddRange(straightGroups);
+                            newGroupContainer.RemoveGroup(straightRemainedGroup);
+                            groupContainers.Add(newGroupContainer);
+                        }
+
+                        else
+                        {
+                            if (j >= 3 && straightGroupLength - 1 - j <= 3)
+                            {
+                                var newList = new List<CardBase>(straightRemainedGroup.Cards) {groupCards[j]};
+                                SortByKind(newList, out var newGroupContainer);
+                                newGroupContainer.Groups.AddRange(straightGroups);
+                                newGroupContainer.RemoveGroup(straightRemainedGroup);
+                                groupContainers.Add(newGroupContainer);
+                            }
+                        }
+                    }
+                }
+            }
+
+            var score = Mathf.Infinity;
+            var result = new GroupContainer();
+
+            for (var i = 0; i < groupContainers.Count; i++)
+            {
+                var newScore = groupContainers[i].GetRemainedGroup().Score;
+                if (score > newScore)
+                {
+                    score = newScore;
+                    result = groupContainers[i];
+                }
+            }
+
+            var resultList = new List<CardBase>();
+
+            foreach (var group in result.Groups)
+            {
+                if(group.Type != SortType.None)
+                    resultList.AddRange(group.Cards);
+            }
+            
+            resultList.AddRange(result.GetRemainedGroup().Cards);
+            
+            return resultList;
         }
     }
 }
