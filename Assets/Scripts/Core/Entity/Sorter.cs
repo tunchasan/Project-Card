@@ -138,7 +138,7 @@ namespace ProjectCard.Core.Entity
                 {
                     if (counter >= 3)
                     {
-                        var group = new Group {Type = sortType, Cards = new List<CardBase>(counter)};
+                        var group = new Group {Type = sortType, Score = -1, Cards = new List<CardBase>(counter)};
                         group.Cards.AddRange(unGroup.Cards);
                         groupContainer.Groups.Add(group);
                         cards.RemoveRange(i, counter);
@@ -154,6 +154,7 @@ namespace ProjectCard.Core.Entity
             }
 
             var newGroup = new Group {Type = SortType.None, Cards = new List<CardBase>(cards)};
+            newGroup.ValidateScore();
             groupContainer.Groups.Add(newGroup);
             return groupContainer;
         }
