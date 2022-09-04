@@ -121,6 +121,10 @@ namespace ProjectCard.Core.Entity
             var bestResult = new GroupContainer();
             var groups = processingGroupContainer.Groups;
             var remainedGroup = processingGroupContainer.GetRemainedGroup();
+
+            CardBase lastProcessedCard = null;
+            var lastProcessedGroup = new Group();
+            
             for (var i = 0; i < groups.Count; i++)
             {
                 if (groups[i].Cards.Count > 3 && groups[i].Type != SortType.None)
@@ -135,6 +139,9 @@ namespace ProjectCard.Core.Entity
                             SortForBestResult(newList, out var newGroupContainer, sortType);
                             if (newGroupContainer.Score < bestScore)
                             {
+                                lastProcessedCard = groupCards[j];
+                                lastProcessedGroup = groups[i];
+                                
                                 bestScore = newGroupContainer.Score;
                                 newGroupContainer.Groups.AddRange(groups);
                                 newGroupContainer.RemoveGroup(remainedGroup);
@@ -145,6 +152,8 @@ namespace ProjectCard.Core.Entity
                 }
             }
 
+            lastProcessedGroup.Cards.Remove(lastProcessedCard);
+            
             return bestResult;
         }
         
