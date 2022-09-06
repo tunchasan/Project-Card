@@ -19,7 +19,8 @@ namespace ProjectCard.Game.Managers
         [SerializeField] private Button certainCardsButton = null;
         [SerializeField] private Button randomCardsButton = null;
         [SerializeField] private Slider randomCardAmountSlider = null;
-        [SerializeField] private TextMeshProUGUI sliderTextMesh = null;
+        [SerializeField] private TextMeshProUGUI sliderText = null;
+        [SerializeField] private TextMeshProUGUI deckText = null;
 
         public static Action<ThemeType> OnChangeThemeRequest;
         public static Action<SortType> OnSortCardsRequest;
@@ -29,10 +30,12 @@ namespace ProjectCard.Game.Managers
         public void OnClickTheme1Button()
         {
             OnChangeThemeRequest?.Invoke(ThemeType.Theme1);
+            DisableUIElements();
         }
         public void OnClickTheme2Button()
         {
             OnChangeThemeRequest?.Invoke(ThemeType.Theme2);
+            DisableUIElements();
         }
         public void OnClickStraightButton()
         {
@@ -50,22 +53,21 @@ namespace ProjectCard.Game.Managers
         {
             OnSortCardsRequest?.Invoke(SortType.Shuffle);
         }
-
         public void OnClickCertainCardsButton()
         {
             OnDrawCertainCardsRequest?.Invoke();
+            deckText.text = $"DECK\n 52/11";
         }
-
         public void OnClickRandomCardsRequest()
         {
-            OnDrawRandomCardsRequest?.Invoke((int)randomCardAmountSlider.value);
+            var value = (int) randomCardAmountSlider.value;
+            OnDrawRandomCardsRequest?.Invoke(value);
+            deckText.text = $"DECK\n 52/{(int)randomCardAmountSlider.value}";
         }
-
         public void OnChangeSliderValue()
         {
-            sliderTextMesh.text = $"DRAW RANDOM CARDS ({(int)randomCardAmountSlider.value})";
+            sliderText.text = $"DRAW RANDOM CARDS ({(int)randomCardAmountSlider.value})";
         }
-
         private void ValidateElementsStatus(bool status)
         {
             theme1Button.interactable = status;
@@ -78,12 +80,10 @@ namespace ProjectCard.Game.Managers
             randomCardsButton.interactable = status;
             randomCardAmountSlider.interactable = status;
         }
-
         public void EnableUIElements()
         {
             ValidateElementsStatus(true);
         }
-
         public void DisableUIElements()
         {
             ValidateElementsStatus(false);
@@ -93,12 +93,13 @@ namespace ProjectCard.Game.Managers
         {
             GameManager.OnGamePlay += EnableUIElements;
             GameManager.OnGameQuit += DisableUIElements;
+            ThemeManager.OnChangeTheme += EnableUIElements;
         }
-
         private void OnDisable()
         {
             GameManager.OnGamePlay -= EnableUIElements;
             GameManager.OnGameQuit -= DisableUIElements;
+            ThemeManager.OnChangeTheme -= EnableUIElements;
         }
     }
 }

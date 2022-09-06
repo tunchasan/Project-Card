@@ -1977,7 +1977,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Deck
 
-    52/10'
+    52/0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e29b80abcee9a146ba4a4a211eb232f, type: 2}
   m_sharedMaterial: {fileID: 1657116426021687155, guid: 2e29b80abcee9a146ba4a4a211eb232f, type: 2}
@@ -2302,7 +2302,7 @@ GameObject:
   - component: {fileID: 1613882699}
   - component: {fileID: 1613882698}
   m_Layer: 0
-  m_Name: Theme-1
+  m_Name: Theme
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2349,7 +2349,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8023f184eac1b094aa2c595ff90e0cdd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 80fbac452f3083047a995ac3b79d53e4, type: 3}
   m_Color: {r: 0.6423139, g: 0.5913581, b: 0.9150943, a: 0.2627451}
   m_FlipX: 0
   m_FlipY: 0
@@ -2521,6 +2521,7 @@ GameObject:
   - component: {fileID: 1819601444}
   - component: {fileID: 1819601446}
   - component: {fileID: 1819601445}
+  - component: {fileID: 1819601447}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -2564,7 +2565,8 @@ MonoBehaviour:
   certainCardsButton: {fileID: 2143331906}
   randomCardsButton: {fileID: 33048020}
   randomCardAmountSlider: {fileID: 1445918943}
-  sliderTextMesh: {fileID: 1751555714}
+  sliderText: {fileID: 1751555714}
+  deckText: {fileID: 1197276777}
 --- !u!114 &1819601446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2577,6 +2579,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8b9530d0213945149bed72da9994e43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1819601447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819601443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f7935235b90d4c9ba97e363805f1f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  background: {fileID: 1613882698}
+  theme1: {fileID: 11400000, guid: 8bda830f2901f4e6eb1ac3e2994b68c6, type: 2}
+  theme2: {fileID: 11400000, guid: 758808894db0c4323abae3236068e111, type: 2}
 --- !u!1 &1877216692
 GameObject:
   m_ObjectHideFlags: 0

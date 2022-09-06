@@ -3,6 +3,7 @@ using ProjectCard.Core.Entity;
 using ProjectCard.Core.Utilities;
 using ProjectCard.Game.Debug;
 using ProjectCard.Game.Managers;
+using ProjectCard.Game.Utilities;
 
 namespace ProjectCard.Game.Controller
 {
@@ -13,13 +14,11 @@ namespace ProjectCard.Game.Controller
             DeckProvider = new DeckProvider();
             Session = new Session();
             
-            DrawCertainCards();
+            DrawCertainCardsRequest();
             
-            // TODO
-            // Update the Code
-            GameManager.OnGamePlay?.Invoke();
+            GameManager.Instance.UpdateState(GameState.OnPlay);
         }
-        public override void RequestSort(SortType sortType)
+        public override void SortCardsRequest(SortType sortType)
         {
             switch (sortType)
             {
@@ -39,7 +38,7 @@ namespace ProjectCard.Game.Controller
             
             Display();
         }
-        protected override void DrawCertainCards()
+        protected override void DrawCertainCardsRequest()
         {
             var certainCards = new List<int> {26, 1, 17, 29, 0, 15, 42, 3, 13, 2, 16};
             
@@ -47,7 +46,7 @@ namespace ProjectCard.Game.Controller
             
             Display();
         }
-        protected override void DrawRandomCards(int cardAmounts)
+        protected override void DrawRandomCardsRequest(int cardAmounts)
         {
             DeckProvider.DrawRandomCards(cardAmounts, Session);
             

@@ -17,5 +17,28 @@ namespace ProjectCard.Game.Managers
             CurrentState = GameState.OnStart;
             OnGameStart?.Invoke();
         }
+
+        public void UpdateState(GameState state)
+        {
+            if (state != CurrentState)
+            {
+                CurrentState = state;
+                
+                OnGameStateChange?.Invoke(CurrentState);
+
+                switch (state)
+                {
+                    case GameState.OnStart:
+                        OnGameStart?.Invoke();
+                        return;
+                    case GameState.OnPlay:
+                        OnGamePlay?.Invoke();
+                        return;
+                    case GameState.OnQuit:
+                        OnGameQuit?.Invoke();
+                        return;
+                }
+            }
+        }
     }
 }
