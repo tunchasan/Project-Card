@@ -20,6 +20,13 @@ namespace ProjectCard.Core.Entity
             // Stores the data inside of the Session
             session.ValidateSession(cards.ToList());
         }
+
+        public override void ShuffleSort(SessionBase session)
+        {
+            var result = session.Data().SortByShuffle();
+            session.ValidateSession(result);
+        }
+
         public override void StraightSort(SessionBase session)
         {
             var result = session.Data().SortByStraight();

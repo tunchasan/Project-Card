@@ -11,9 +11,9 @@ namespace ProjectCard.Core.Entity
         private static readonly Random Random = new();
         
         // Shuffle
-        public static void SortByShuffle(this CardBase[] cards)
+        public static List<CardBase> SortByShuffle(this List<CardBase> cards)
         {
-            var n = cards.Length;
+            var n = cards.Count;
             while (n > 1) 
             {
                 var k = Random.Next(n--);
@@ -21,8 +21,9 @@ namespace ProjectCard.Core.Entity
                 cards[n] = cards[k];
                 cards[k] = temp;
             }
+
+            return cards;
         }
-        
         // 1-2-3 = Generates sorted groupContainer which contains sub groups separately
         public static GroupContainer SortByStraight(this List<CardBase> cards)
         {
@@ -31,7 +32,6 @@ namespace ProjectCard.Core.Entity
 
             return cards.ProcessGroups(SortType.Straight);
         }
-        
         // 7-7-7 = Generates sorted groupContainer which contains sub groups separately
         public static GroupContainer SortByKind(this List<CardBase> cards)
         {
@@ -40,7 +40,6 @@ namespace ProjectCard.Core.Entity
 
             return cards.ProcessGroups(SortType.SameKind);
         }
-        
         // Smart
         public static List<CardBase> SortBySmart(this List<CardBase> cards)
         {
@@ -54,7 +53,6 @@ namespace ProjectCard.Core.Entity
 
             return bestResult.GetAllCards();
         }
-        
         private static bool SortCondition(CardBase card1, CardBase card2, SortType sortType)
         {
             return sortType switch
@@ -64,7 +62,6 @@ namespace ProjectCard.Core.Entity
                 _ => false
             };
         }
-        
         private static bool SortCondition(int index, int groupLength, SortType sortType)
         {
             return sortType switch
@@ -74,7 +71,6 @@ namespace ProjectCard.Core.Entity
                 _ => false
             };
         }
-        
         private static GroupContainer ProcessGroups(this List<CardBase> cards, SortType sortType)
         {
             var counter = 1;
@@ -115,7 +111,6 @@ namespace ProjectCard.Core.Entity
             groupContainer.ValidateScore();
             return groupContainer;
         }
-        
         private static GroupContainer FindBestResult(int bestScore, GroupContainer processingGroupContainer, SortType sortType)
         {
             var bestResult = new GroupContainer();
@@ -156,7 +151,6 @@ namespace ProjectCard.Core.Entity
             
             return bestResult;
         }
-        
         private static void SortForBestResult(List<CardBase> cards, out GroupContainer groupContainer, SortType sortType)
         {
             switch (sortType)

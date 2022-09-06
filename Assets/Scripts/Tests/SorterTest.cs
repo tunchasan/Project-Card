@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using ProjectCard.Core.Entity;
+using UnityEngine;
 
 namespace ProjectCard.Tests
 {
@@ -27,6 +28,23 @@ namespace ProjectCard.Tests
             _deckProvider.DrawRandomCards(15, _session);
 
             Assert.AreEqual(15, _session.Data().Count);
+        }
+        
+        [Test]
+        public void ShuffleSortTest()
+        {
+            var certainCards = new List<int> {26, 1, 17, 29, 0, 15, 42, 3, 13, 2, 16};
+            _deckProvider.DrawCertainCards(certainCards, _session);
+            _deckProvider.ShuffleSort(_session);
+            var sortedCards = _session.Data();
+            
+            Assert.AreEqual(certainCards.Count, sortedCards.Count);
+
+            foreach (var id in certainCards)
+            {
+                var result = sortedCards.Find(card => card.Id == id);
+                Assert.AreEqual(true, result != null);
+            }
         }
         
         [Test]

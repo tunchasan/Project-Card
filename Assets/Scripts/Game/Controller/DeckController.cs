@@ -24,7 +24,7 @@ namespace ProjectCard.Game.Controller
             switch (sortType)
             {
                 case SortType.Shuffle:
-                    // TODO
+                    DeckProvider.ShuffleSort(Session);
                     break;
                 case SortType.Straight:
                     DeckProvider.StraightSort(Session);

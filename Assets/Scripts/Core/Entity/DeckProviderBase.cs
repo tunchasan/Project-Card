@@ -12,6 +12,7 @@ namespace ProjectCard.Core.Entity
 
         public abstract void DrawCertainCards(List<int> cardIds, SessionBase session);
         public abstract void DrawRandomCards(int amount, SessionBase sessionBase);
+        public abstract void ShuffleSort(SessionBase session);
         public abstract void StraightSort(SessionBase session);
         public abstract void SameKindSort(SessionBase session);
         public abstract void SmartSort(SessionBase session);
