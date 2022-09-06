@@ -10,8 +10,7 @@ namespace ProjectCard.Game.Managers
     public class UIManager : Singleton<UIManager>
     {
         [Header("@References")] 
-        [SerializeField] private Button theme1Button = null;
-        [SerializeField] private Button theme2Button = null;
+        [SerializeField] private Button changeThemeButton = null;
         [SerializeField] private Button straightButton = null;
         [SerializeField] private Button sameKindButton = null;
         [SerializeField] private Button smartButton = null;
@@ -22,21 +21,17 @@ namespace ProjectCard.Game.Managers
         [SerializeField] private TextMeshProUGUI sliderText = null;
         [SerializeField] private TextMeshProUGUI deckText = null;
 
-        public static Action<ThemeType> OnChangeThemeRequest;
+        public static Action OnChangeThemeRequest;
         public static Action<SortType> OnSortCardsRequest;
         public static Action OnDrawCertainCardsRequest;
         public static Action<int> OnDrawRandomCardsRequest;
 
-        public void OnClickTheme1Button()
+        public void OnClickChangeThemeButton()
         {
-            OnChangeThemeRequest?.Invoke(ThemeType.Theme1);
+            OnChangeThemeRequest?.Invoke();
             DisableUIElements();
         }
-        public void OnClickTheme2Button()
-        {
-            OnChangeThemeRequest?.Invoke(ThemeType.Theme2);
-            DisableUIElements();
-        }
+
         public void OnClickStraightButton()
         {
             OnSortCardsRequest?.Invoke(SortType.Straight);
@@ -70,8 +65,7 @@ namespace ProjectCard.Game.Managers
         }
         private void ValidateElementsStatus(bool status)
         {
-            theme1Button.interactable = status;
-            theme2Button.interactable = status;
+            changeThemeButton.interactable = status;
             straightButton.interactable = status;
             sameKindButton.interactable = status;
             smartButton.interactable = status;

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Theme2
   m_EditorClassIdentifier: 
   backgroundAsset: {fileID: 21300000, guid: 8023f184eac1b094aa2c595ff90e0cdd, type: 3}
+  color: {r: 0.62352943, g: 0.36862746, b: 0.53333336, a: 1}
   cardAssets: []
