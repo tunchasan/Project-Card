@@ -1,6 +1,5 @@
 using System;
 using ProjectCard.Core.Utilities;
-using ProjectCard.Game.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +30,6 @@ namespace ProjectCard.Game.Managers
             OnChangeThemeRequest?.Invoke();
             DisableUIElements();
         }
-
         public void OnClickStraightButton()
         {
             OnSortCardsRequest?.Invoke(SortType.Straight);

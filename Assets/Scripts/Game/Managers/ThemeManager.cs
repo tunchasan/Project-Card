@@ -10,6 +10,7 @@ namespace ProjectCard.Game.Managers
     {
         [Header("@References")]
         [SerializeField] private SpriteRenderer background;
+        [SerializeField] private Camera playerCamera;
         [Header("@Configurations")]
         [SerializeField] private ThemeData theme1;
         [SerializeField] private ThemeData theme2;
@@ -32,7 +33,7 @@ namespace ProjectCard.Game.Managers
             var targetColor = background.color;
             targetColor.a = 0;
 
-            DOTween.To(() => Camera.main.backgroundColor, x => Camera.main.backgroundColor = x, initialColor, 1F);
+            DOTween.To(() => playerCamera.backgroundColor, x => playerCamera.backgroundColor = x, initialColor, 1F);
             
             DOTween.To(() => background.color, x => background.color = x, targetColor, .5F)
                 .OnComplete(() =>
@@ -43,10 +44,7 @@ namespace ProjectCard.Game.Managers
 
                     DOTween.To(() => background.color, x => background.color = x, initialColor, .5F)
                         .OnComplete(() => { OnChangeTheme?.Invoke(); });
-
-                    
                 });
-            
         }
         
         private void OnEnable()
