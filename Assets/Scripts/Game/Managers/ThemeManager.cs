@@ -15,6 +15,7 @@ namespace ProjectCard.Game.Managers
         [SerializeField] private ThemeData theme1;
         [SerializeField] private ThemeData theme2;
 
+        public float AnimationDuration { private set; get; } = 1F;
         public ThemeType CurrentTheme { private set; get; } = ThemeType.Theme1;
 
         public static Action<ThemeData> OnChangeTheme;
@@ -37,14 +38,14 @@ namespace ProjectCard.Game.Managers
             var targetColor = background.color;
             targetColor.a = 0;
 
-            DOTween.To(() => playerCamera.backgroundColor, x => playerCamera.backgroundColor = x, initialColor, 1F);
+            DOTween.To(() => playerCamera.backgroundColor, x => playerCamera.backgroundColor = x, initialColor, AnimationDuration);
             
-            DOTween.To(() => background.color, x => background.color = x, targetColor, .5F)
+            DOTween.To(() => background.color, x => background.color = x, targetColor, AnimationDuration / 2F)
                 .OnComplete(() =>
                 {
                     background.sprite = targetTheme.backgroundAsset;
 
-                    DOTween.To(() => background.color, x => background.color = x, initialColor, .5F)
+                    DOTween.To(() => background.color, x => background.color = x, initialColor, AnimationDuration / 2F)
                         .OnComplete(() => { OnChangeThemeComplete?.Invoke(); });
                 });
         }

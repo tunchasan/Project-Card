@@ -5,9 +5,11 @@ using UnityEngine;
 
 namespace ProjectCard.Game.Controller
 {
+    [RequireComponent(typeof(DeckLayoutGroupBase))]
     public abstract class DeckControllerBase : MonoBehaviour
     {
         protected DeckProviderBase DeckProvider = null;
+        protected DeckLayoutGroupBase DeckLayoutGroup = null;
         protected SessionBase Session = null;
         protected abstract void Initialize();
         public abstract void SortCardsRequest(SortType sortType);

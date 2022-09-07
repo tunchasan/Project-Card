@@ -12,10 +12,11 @@ namespace ProjectCard.Game.Controller
         protected override void Initialize()
         {
             DeckProvider = new DeckProvider();
+            DeckLayoutGroup = GetComponent<DeckLayoutGroupBase>();
             Session = new Session();
             
             DrawCertainCardsRequest();
-            
+            DeckLayoutGroup.Initialize(Session.Data());
             GameManager.Instance.UpdateState(GameState.OnPlay);
         }
         public override void SortCardsRequest(SortType sortType)
