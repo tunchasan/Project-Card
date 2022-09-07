@@ -112,8 +112,7 @@ namespace ProjectCard.Game.Controller
             var offset = spacing * Limit * .75F;
             var horizontal = Mathf.Lerp(-offset, offset, alpha) * spacing;
             var angle = Mathf.Lerp(Spring, -Spring, alpha) * (spacing - .2F);
-            var vertical = angle * spacing / -15F;
-            vertical = horizontal > 0F ? -vertical : vertical;
+            var vertical = Mathf.Lerp(angle / -20F, angle / 20F, alpha) * spacing;
             position = new Vector3(horizontal, vertical, 0);
             rotation = new Vector3(0F, 0F, angle);
         }

@@ -14,7 +14,7 @@ namespace ProjectCard.Game.Controller
 
         [SerializeField] protected DeckLayoutElementBase layoutElement = null;
 
-        protected const float Spring = 15;
+        protected const float Spring = 30;
         protected const float Limit = 8;
         protected const int MaxSize = DeckBase.Size;
         
