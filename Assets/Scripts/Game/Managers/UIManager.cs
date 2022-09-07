@@ -85,13 +85,13 @@ namespace ProjectCard.Game.Managers
         {
             GameManager.OnGamePlay += EnableUIElements;
             GameManager.OnGameQuit += DisableUIElements;
-            ThemeManager.OnChangeTheme += EnableUIElements;
+            ThemeManager.OnChangeThemeComplete += EnableUIElements;
         }
         private void OnDisable()
         {
             GameManager.OnGamePlay -= EnableUIElements;
             GameManager.OnGameQuit -= DisableUIElements;
-            ThemeManager.OnChangeTheme -= EnableUIElements;
+            ThemeManager.OnChangeThemeComplete -= EnableUIElements;
         }
     }
 }

@@ -17,7 +17,8 @@ namespace ProjectCard.Game.Managers
 
         public ThemeType CurrentTheme { private set; get; } = ThemeType.Theme1;
 
-        public static Action OnChangeTheme;
+        public static Action<ThemeData> OnChangeTheme;
+        public static Action OnChangeThemeComplete;
         
         private void ChangeTheme()
         {
@@ -29,7 +30,10 @@ namespace ProjectCard.Game.Managers
 
         private void AnimateTheme()
         {
-            var initialColor = CurrentTheme == ThemeType.Theme1 ? theme1.color : theme2.color;
+            var targetTheme = CurrentTheme == ThemeType.Theme1 ? theme1 : theme2;
+            OnChangeTheme?.Invoke(targetTheme);
+
+            var initialColor = targetTheme.backgroundColor;
             var targetColor = background.color;
             targetColor.a = 0;
 
@@ -38,12 +42,10 @@ namespace ProjectCard.Game.Managers
             DOTween.To(() => background.color, x => background.color = x, targetColor, .5F)
                 .OnComplete(() =>
                 {
-                    background.sprite = CurrentTheme == ThemeType.Theme1
-                        ? theme1.backgroundAsset
-                        : theme2.backgroundAsset;
+                    background.sprite = targetTheme.backgroundAsset;
 
                     DOTween.To(() => background.color, x => background.color = x, initialColor, .5F)
-                        .OnComplete(() => { OnChangeTheme?.Invoke(); });
+                        .OnComplete(() => { OnChangeThemeComplete?.Invoke(); });
                 });
         }
         

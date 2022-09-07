@@ -7,7 +7,8 @@ namespace ProjectCard.Game.SO
     public class ThemeData : ScriptableObject
     {
         public Sprite backgroundAsset = null;
-        public Color color = Color.black;
+        public Color backgroundColor = Color.black;
+        public Color cardColor = Color.black;
         public List<Sprite> cardAssets = new();
     }
 }
