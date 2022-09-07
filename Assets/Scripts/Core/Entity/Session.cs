@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ProjectCard.Core.Utilities;
 
 namespace ProjectCard.Core.Entity
 {
@@ -19,6 +20,8 @@ namespace ProjectCard.Core.Entity
         {
             IsInitialized = true;
             SessionId++;
+            ErrorCode = ErrorCode.None;
+            OnReceiveError?.Invoke(ErrorCode.None);
         }
         
         public override void ValidateSession(List<CardBase> newCards)
@@ -26,6 +29,19 @@ namespace ProjectCard.Core.Entity
             Cards = newCards;
             IsInitialized = true;
             SessionId++;
+            ErrorCode = ErrorCode.None;
+            OnReceiveError?.Invoke(ErrorCode.None);
+        }
+
+        public override void ReceiveError(ErrorCode code)
+        {
+            ErrorCode = code;
+            OnReceiveError?.Invoke(ErrorCode);
+        }
+
+        public override bool IsValidSession()
+        {
+            return IsInitialized && ErrorCode == ErrorCode.None;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using ProjectCard.Game.Container;
 using ProjectCard.Game.SO;
 using ProjectCard.Game.Utilities;
 using UnityEngine;
@@ -11,30 +12,34 @@ namespace ProjectCard.Game.Managers
         [Header("@References")]
         [SerializeField] private SpriteRenderer background;
         [SerializeField] private Camera playerCamera;
-        [Header("@Configurations")]
-        [SerializeField] private ThemeData theme1;
-        [SerializeField] private ThemeData theme2;
 
+        public const int Size = 2; 
         public float AnimationDuration { private set; get; } = 1F;
-        public ThemeType CurrentTheme { private set; get; } = ThemeType.Theme1;
+        public ThemeData CurrentTheme { private set; get; } = null;
 
         public static Action<ThemeData> OnChangeTheme;
         public static Action OnChangeThemeComplete;
-        
+
+        private void Start()
+        {
+            CurrentTheme = AssetsContainer.Instance.GetThemeAsset(ThemeType.Theme1);
+            GameManager.Instance.UpdateState(GameState.OnStart);
+        }
+
         private void ChangeTheme()
         {
-            CurrentTheme = CurrentTheme == ThemeType.Theme1 ? 
-                ThemeType.Theme2 : ThemeType.Theme1;
+            CurrentTheme = CurrentTheme.type == ThemeType.Theme1 ? 
+                AssetsContainer.Instance.GetThemeAsset(ThemeType.Theme2) : 
+                AssetsContainer.Instance.GetThemeAsset(ThemeType.Theme1);
             
             AnimateTheme();
         }
 
         private void AnimateTheme()
         {
-            var targetTheme = CurrentTheme == ThemeType.Theme1 ? theme1 : theme2;
-            OnChangeTheme?.Invoke(targetTheme);
+            OnChangeTheme?.Invoke(CurrentTheme);
 
-            var initialColor = targetTheme.backgroundColor;
+            var initialColor = CurrentTheme.backgroundColor;
             var targetColor = background.color;
             targetColor.a = 0;
 
@@ -43,7 +48,7 @@ namespace ProjectCard.Game.Managers
             DOTween.To(() => background.color, x => background.color = x, targetColor, AnimationDuration / 2F)
                 .OnComplete(() =>
                 {
-                    background.sprite = targetTheme.backgroundAsset;
+                    background.sprite = CurrentTheme.backgroundAsset;
 
                     DOTween.To(() => background.color, x => background.color = x, initialColor, AnimationDuration / 2F)
                         .OnComplete(() => { OnChangeThemeComplete?.Invoke(); });

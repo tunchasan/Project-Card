@@ -1,10 +1,8 @@
-using UnityEngine;
-
 namespace ProjectCard.Game.Controller
 {
-    [RequireComponent(typeof(SpriteRenderer))]
     public abstract class CardControllerBase : DeckLayoutElement
     {
-        // TODO
+        public abstract override void Initialize();
+        public abstract override void Initialize(int id);
     }
 }

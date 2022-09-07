@@ -12,12 +12,12 @@ namespace ProjectCard.Core.Entity
         public List<CardBase> GetAllCards()
         {
             var allCards = new List<CardBase>();
-
+            
             foreach (var @group in Groups.Where(@group => @group.Type != SortType.None))
             {
                 allCards.AddRange(@group.Cards);
             }
-                        
+            
             allCards.AddRange(GetRemainedGroup().Cards);
 
             return allCards;
@@ -38,6 +38,13 @@ namespace ProjectCard.Core.Entity
         public void RemoveGroup(Group member)
         {
             Groups.Remove(member);
+        }
+
+        public bool IsValid()
+        {
+            if (Groups.Count == 0) return false;
+
+            return Groups.Any(group => group.Type != SortType.None);
         }
     }
 }

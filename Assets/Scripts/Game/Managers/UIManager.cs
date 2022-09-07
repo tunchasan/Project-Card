@@ -19,16 +19,22 @@ namespace ProjectCard.Game.Managers
         [SerializeField] private Slider randomCardAmountSlider = null;
         [SerializeField] private TextMeshProUGUI sliderText = null;
         [SerializeField] private TextMeshProUGUI deckText = null;
+        [SerializeField] private TextMeshProUGUI errorText = null;
 
         public static Action OnChangeThemeRequest;
         public static Action<SortType> OnSortCardsRequest;
         public static Action OnDrawCertainCardsRequest;
         public static Action<int> OnDrawRandomCardsRequest;
 
+        private void Start()
+        {
+            deckText.text = $"DECK\n 52/11";
+        }
         public void OnClickChangeThemeButton()
         {
             OnChangeThemeRequest?.Invoke();
             DisableUIElements();
+            ResetErrorMessage();
         }
         public void OnClickStraightButton()
         {
@@ -79,6 +85,43 @@ namespace ProjectCard.Game.Managers
         public void DisableUIElements()
         {
             ValidateElementsStatus(false);
+        }
+
+        private void UpdateErrorMessage(string message)
+        {
+            errorText.gameObject.SetActive(true);
+            errorText.text += message;
+        }
+
+        private void ResetErrorMessage()
+        {
+            errorText.gameObject.SetActive(false);
+            errorText.text = "The deck isn't suitable for\n";
+        }
+
+        public void DisplayErrors(ErrorCode code)
+        {
+            switch (code)
+            {
+                case ErrorCode.None:
+                    straightButton.interactable = true;
+                    sameKindButton.interactable = true;
+                    smartButton.interactable = true;
+                    ResetErrorMessage();
+                    break;
+                case ErrorCode.NoDataReceiveFromStraightRequest:
+                    straightButton.interactable = false;
+                    UpdateErrorMessage("\n-Straight Sorting");
+                    break;
+                case ErrorCode.NoDataReceiveFromSameKindRequest:
+                    sameKindButton.interactable = false;
+                    UpdateErrorMessage("\n-SameKind Sorting");
+                    break;
+                case ErrorCode.NoDataReceiveFromSmartRequest:
+                    smartButton.interactable = false;
+                    UpdateErrorMessage("\n-Smart Sorting");
+                    break;
+            }
         }
 
         private void OnEnable()

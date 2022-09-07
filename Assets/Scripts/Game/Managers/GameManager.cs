@@ -11,12 +11,6 @@ namespace ProjectCard.Game.Managers
         public static Action OnGamePlay;
         public static Action OnGameQuit;
         public static Action<GameState> OnGameStateChange;
-        
-        private void Start()
-        {
-            CurrentState = GameState.OnStart;
-            OnGameStart?.Invoke();
-        }
 
         public void UpdateState(GameState state)
         {

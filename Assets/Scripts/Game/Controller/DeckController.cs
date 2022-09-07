@@ -14,9 +14,9 @@ namespace ProjectCard.Game.Controller
             DeckProvider = new DeckProvider();
             DeckLayoutGroup = GetComponent<DeckLayoutGroupBase>();
             Session = new Session();
+            Session.OnReceiveError += UIManager.Instance.DisplayErrors;
             
             DrawCertainCardsRequest();
-            DeckLayoutGroup.Initialize(Session.Data());
             GameManager.Instance.UpdateState(GameState.OnPlay);
         }
         public override void SortCardsRequest(SortType sortType)
@@ -37,7 +37,10 @@ namespace ProjectCard.Game.Controller
                     break;
             }
             
-            Display();
+            if(Session.IsValidSession())
+                DeckLayoutGroup.ValidateLayout(Session.Data());
+            else
+                ConditionalDebug.LogWarning($"Something went wrong during SortCardsRequest Process! - {Session.ErrorCode}");
         }
         protected override void DrawCertainCardsRequest()
         {
@@ -45,13 +48,19 @@ namespace ProjectCard.Game.Controller
             
             DeckProvider.DrawCertainCards(certainCards, Session);
             
-            Display();
+            if(Session.IsValidSession())
+                DeckLayoutGroup.Initialize(Session.Data(), Display);
+            else
+                ConditionalDebug.LogWarning($"Something went wrong during DrawCertainCards Process! - {Session.ErrorCode}");
         }
         protected override void DrawRandomCardsRequest(int cardAmounts)
         {
             DeckProvider.DrawRandomCards(cardAmounts, Session);
             
-            Display();
+            if(Session.IsValidSession())
+                DeckLayoutGroup.Initialize(Session.Data(), Display);
+            else
+                ConditionalDebug.LogWarning($"Something went wrong during DrawRandomCards Process! - {Session.ErrorCode}");
         }
         protected override void Display()
         {

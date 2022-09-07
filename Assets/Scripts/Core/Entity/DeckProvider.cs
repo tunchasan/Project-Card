@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ProjectCard.Core.Utilities;
 
 namespace ProjectCard.Core.Entity
 {
@@ -20,27 +21,52 @@ namespace ProjectCard.Core.Entity
             // Stores the data inside of the Session
             session.ValidateSession(cards.ToList());
         }
-
         public override void ShuffleSort(SessionBase session)
         {
             var result = session.Data().SortByShuffle();
             session.ValidateSession(result);
         }
-
         public override void StraightSort(SessionBase session)
         {
             var result = session.Data().SortByStraight();
-            session.ValidateSession(result.GetAllCards());
+            
+            if (result.IsValid())
+            {
+                session.ValidateSession(result.GetAllCards());
+            }
+
+            else
+            {
+                session.ReceiveError(ErrorCode.NoDataReceiveFromStraightRequest);
+            }
         }
         public override void SameKindSort(SessionBase session)
         {
             var result = session.Data().SortByKind();
-            session.ValidateSession(result.GetAllCards());
+
+            if (result.IsValid())
+            {
+                session.ValidateSession(result.GetAllCards());
+            }
+
+            else
+            {
+                session.ReceiveError(ErrorCode.NoDataReceiveFromSameKindRequest);
+            }
         }
         public override void SmartSort(SessionBase session)
         {
             var result = session.Data().SortBySmart();
-            session.ValidateSession(result);
+            
+            if (result.IsValid())
+            {
+                session.ValidateSession(result.GetAllCards());
+            }
+
+            else
+            {
+                session.ReceiveError(ErrorCode.NoDataReceiveFromSmartRequest);
+            }
         }
     }
 }

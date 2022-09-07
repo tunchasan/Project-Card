@@ -41,17 +41,15 @@ namespace ProjectCard.Core.Entity
             return cards.ProcessGroups(SortType.SameKind);
         }
         // Smart
-        public static List<CardBase> SortBySmart(this List<CardBase> cards)
+        public static GroupContainer SortBySmart(this List<CardBase> cards)
         {
-            var bestResult = new GroupContainer{Score = 99};
-            
             var straightGroupContainer = SortByStraight(cards);
             var sameKindGroupContainer = SortByKind(cards);
 
-            bestResult = FindBestResult(bestResult.Score, sameKindGroupContainer, SortType.Straight);
-            bestResult = FindBestResult(bestResult.Score, straightGroupContainer, SortType.SameKind);
+            var bestResult1 = FindBestResult(sameKindGroupContainer, SortType.Straight);
+            var bestResult2 = FindBestResult(straightGroupContainer, SortType.SameKind);
 
-            return bestResult.GetAllCards();
+            return bestResult1.Score < bestResult2.Score ? bestResult1 : bestResult2;
         }
         private static bool SortCondition(CardBase card1, CardBase card2, SortType sortType)
         {
@@ -111,9 +109,9 @@ namespace ProjectCard.Core.Entity
             groupContainer.ValidateScore();
             return groupContainer;
         }
-        private static GroupContainer FindBestResult(int bestScore, GroupContainer processingGroupContainer, SortType sortType)
+        private static GroupContainer FindBestResult(GroupContainer processingGroupContainer, SortType sortType)
         {
-            var bestResult = new GroupContainer();
+            var bestResult = new GroupContainer() {Groups = new List<Group>(), Score = 999};
             var groups = processingGroupContainer.Groups;
             var remainedGroup = processingGroupContainer.GetRemainedGroup();
 
@@ -132,12 +130,11 @@ namespace ProjectCard.Core.Entity
                         {
                             var newList = new List<CardBase>(remainedGroup.Cards) {groupCards[j]};
                             SortForBestResult(newList, out var newGroupContainer, sortType);
-                            if (newGroupContainer.Score < bestScore)
+                            if (newGroupContainer.Score < bestResult.Score)
                             {
                                 lastProcessedCard = groupCards[j];
                                 lastProcessedGroup = groups[i];
                                 
-                                bestScore = newGroupContainer.Score;
                                 newGroupContainer.Groups.AddRange(groups);
                                 newGroupContainer.RemoveGroup(remainedGroup);
                                 bestResult = newGroupContainer;
@@ -147,8 +144,9 @@ namespace ProjectCard.Core.Entity
                 }
             }
 
-            lastProcessedGroup.Cards.Remove(lastProcessedCard);
-            
+            if(lastProcessedCard != null)
+                lastProcessedGroup.Cards.Remove(lastProcessedCard);
+
             return bestResult;
         }
         private static void SortForBestResult(List<CardBase> cards, out GroupContainer groupContainer, SortType sortType)

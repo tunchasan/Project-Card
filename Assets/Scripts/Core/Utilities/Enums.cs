@@ -33,4 +33,12 @@ namespace ProjectCard.Core.Utilities
         SameKind,
         Smart
     }
+    
+    public enum ErrorCode
+    {
+        None,
+        NoDataReceiveFromStraightRequest,
+        NoDataReceiveFromSameKindRequest,
+        NoDataReceiveFromSmartRequest
+    }
 }
