@@ -14,7 +14,7 @@ namespace ProjectCard.Game.Managers
         [SerializeField] private Camera playerCamera;
 
         public const int Size = 2; 
-        public float AnimationDuration { private set; get; } = 1F;
+        public float AnimationDuration { private set; get; } = 1.2F;
         public ThemeData CurrentTheme { private set; get; } = null;
 
         public static Action<ThemeData> OnChangeTheme;

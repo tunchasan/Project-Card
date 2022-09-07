@@ -8,10 +8,10 @@ namespace ProjectCard.Game.Controller
         private Tween _visualAnimation, _moveAnimation, _rotateAnimation;
         public override void Initialize() { }
         public override void Initialize(int id) { }
-        public override void UpdateVisual(Color color)
+        public override void UpdateVisual(Color color, float animDuration)
         {
             _visualAnimation?.Kill();
-            _visualAnimation = DOTween.To(() => visual.color, x => visual.color = x, color, .5F);
+            _visualAnimation = DOTween.To(() => visual.color, x => visual.color = x, color, animDuration);
         }
 
         public override void SetSortingOrder(int order)

@@ -94,6 +94,7 @@ namespace ProjectCard.Core.Entity
                         groupContainer.Groups.Add(group);
                         cards.RemoveRange(i, counter);
                         counter = 1;
+                        unGroup.Cards.Clear();
                     }
 
                     else

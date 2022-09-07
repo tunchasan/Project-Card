@@ -47,7 +47,6 @@ namespace ProjectCard.Game.Controller
 
         public override void ValidateLayout(List<CardBase> dataset)
         {
-            UnityEngine.Debug.LogWarning(dataset.Count);
             for (var i = 0; i < dataset.Count; i++)
             {
                 var id = dataset[i].Id;
@@ -104,12 +103,14 @@ namespace ProjectCard.Game.Controller
 
         private IEnumerator AnimateLayoutTheme(ThemeData theme)
         {
-            var waitForSeconds = new WaitForSeconds(.05F);
+            var alpha = ActiveSlots.Count / (float) MaxSize;
+            var animDuration = Mathf.Lerp(.75F, .25F, alpha);
+            var waitForSeconds = new WaitForSeconds(animDuration / 12F);
             var index = 0;
 
             while (index < ActiveSlots.Count)
             {
-                Slots[index].UpdateVisual(theme.cardColor);
+                Slots[index].UpdateVisual(theme.cardColor, animDuration);
                 yield return waitForSeconds;
                 index++;
             }
