@@ -30,15 +30,20 @@ namespace ProjectCard.Game.Controller
         public abstract void UpdateLayoutTheme(ThemeData theme);
         public abstract void ValidateLayout(List<CardBase> elements);
         public abstract void ValidateLayout();
+        public abstract void ValidateLayoutInOrder();
+        public abstract void ValidateLayoutElement(DeckLayoutElementBase element, int index);
         public abstract void ValidateLayoutElement(int layoutElementId, int sortingLayer, bool shouldAnimate);
+        public abstract void UpdateLayoutSpacingValue(float value);
 
         private void OnEnable()
         {
             ThemeManager.OnChangeTheme += UpdateLayoutTheme;
+            UIManager.OnDeckSpacingSliderValueChanged += UpdateLayoutSpacingValue;
         }
         private void OnDisable()
         {
             ThemeManager.OnChangeTheme -= UpdateLayoutTheme;
+            UIManager.OnDeckSpacingSliderValueChanged -= UpdateLayoutSpacingValue;
         }
     }
 }

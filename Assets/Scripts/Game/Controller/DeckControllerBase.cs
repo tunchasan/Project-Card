@@ -30,7 +30,6 @@ namespace ProjectCard.Game.Controller
             UIManager.OnSortCardsRequest -= SortCardsRequest;
             UIManager.OnDrawRandomCardsRequest -= DrawRandomCardsRequest;
             UIManager.OnDrawCertainCardsRequest -= DrawCertainCardsRequest;
-            Session.OnReceiveError -= UIManager.Instance.DisplayErrors;
         }
     }
 }

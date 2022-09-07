@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using ProjectCard.Core.Entity;
+using ProjectCard.Game.Managers;
 using ProjectCard.Game.SO;
 using UnityEngine;
 
@@ -68,6 +69,23 @@ namespace ProjectCard.Game.Controller
             }
         }
 
+        public override void ValidateLayoutInOrder()
+        {
+            for (var i = 0; i < ActiveSlots.Count; i++)
+            {
+                ValidateLayoutElement(Slots[i], i);
+            }
+        }
+        
+        public override void ValidateLayoutElement(DeckLayoutElementBase element, int index)
+        {
+            CalculatePositionAndRotation((float)index / (ActiveSlots.Count - 1), 
+                out var position, out var rotation);
+            element.SetSortingOrder(index);
+            element.SetPosition(position);
+            element.SetRotation(rotation);
+        }
+
         public override void ValidateLayoutElement(int layoutElementId, int sortingLayer, bool shouldAnimate)
         {
             CalculatePositionAndRotation((float)sortingLayer / (ActiveSlots.Count - 1), 
@@ -75,6 +93,12 @@ namespace ProjectCard.Game.Controller
             ActiveSlots[layoutElementId].SetSortingOrder(sortingLayer);
             ActiveSlots[layoutElementId].SetPosition(position, shouldAnimate);
             ActiveSlots[layoutElementId].SetRotation(rotation, shouldAnimate);
+        }
+
+        public override void UpdateLayoutSpacingValue(float value)
+        {
+            spacing = value;
+            ValidateLayoutInOrder();
         }
 
         public override void UpdateLayoutTheme(ThemeData theme)
@@ -98,7 +122,12 @@ namespace ProjectCard.Game.Controller
             spacing = 0F;
 
             DOTween.To(() => spacing, x => spacing = x, targetValue, .5F)
-                .OnUpdate(ValidateLayout).OnComplete(()=> onComplete?.Invoke());
+                .OnUpdate(() =>
+                {
+                    ValidateLayout();
+                    UIManager.Instance.UpdateDeckSliderValue(spacing);
+                    
+                }).OnComplete(()=> onComplete?.Invoke());
         }
 
         private IEnumerator AnimateLayoutTheme(ThemeData theme)

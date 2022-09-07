@@ -17,6 +17,7 @@ namespace ProjectCard.Game.Managers
         [SerializeField] private Button certainCardsButton = null;
         [SerializeField] private Button randomCardsButton = null;
         [SerializeField] private Slider randomCardAmountSlider = null;
+        [SerializeField] private Slider deckSpacingSlider = null;
         [SerializeField] private TextMeshProUGUI sliderText = null;
         [SerializeField] private TextMeshProUGUI deckText = null;
         [SerializeField] private TextMeshProUGUI errorText = null;
@@ -25,6 +26,7 @@ namespace ProjectCard.Game.Managers
         public static Action<SortType> OnSortCardsRequest;
         public static Action OnDrawCertainCardsRequest;
         public static Action<int> OnDrawRandomCardsRequest;
+        public static Action<float> OnDeckSpacingSliderValueChanged;
 
         private void Start()
         {
@@ -67,6 +69,14 @@ namespace ProjectCard.Game.Managers
         {
             sliderText.text = $"DRAW RANDOM CARDS ({(int)randomCardAmountSlider.value})";
         }
+        public void OnChangeDeckSliderValue()
+        {
+            OnDeckSpacingSliderValueChanged?.Invoke(deckSpacingSlider.value);
+        }
+        public void UpdateDeckSliderValue(float spacing)
+        {
+            deckSpacingSlider.value = spacing;
+        }
         private void ValidateElementsStatus(bool status)
         {
             changeThemeButton.interactable = status;
@@ -77,6 +87,7 @@ namespace ProjectCard.Game.Managers
             certainCardsButton.interactable = status;
             randomCardsButton.interactable = status;
             randomCardAmountSlider.interactable = status;
+            deckSpacingSlider.interactable = status;
         }
         public void EnableUIElements()
         {
