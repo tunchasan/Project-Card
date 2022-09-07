@@ -5,6 +5,7 @@ using DG.Tweening;
 using ProjectCard.Core.Entity;
 using ProjectCard.Game.Managers;
 using ProjectCard.Game.SO;
+using ProjectCard.Game.Utilities;
 using UnityEngine;
 
 namespace ProjectCard.Game.Controller
@@ -132,16 +133,18 @@ namespace ProjectCard.Game.Controller
 
         private IEnumerator AnimateLayoutTheme(ThemeData theme)
         {
+            var isReverse = theme.type == ThemeType.Theme1;
             var alpha = ActiveSlots.Count / (float) MaxSize;
             var animDuration = Mathf.Lerp(.75F, .25F, alpha);
-            var waitForSeconds = new WaitForSeconds(animDuration / 12F);
-            var index = 0;
+            var intervalDuration = Mathf.Lerp(.12F, .02F,alpha);
+            var waitForSeconds = new WaitForSeconds(intervalDuration);
+            var index = isReverse ? ActiveSlots.Count - 1 : 0;
 
-            while (index < ActiveSlots.Count)
+            while (index < ActiveSlots.Count && index >= 0)
             {
                 Slots[index].UpdateVisual(theme.cardColor, animDuration);
                 yield return waitForSeconds;
-                index++;
+                index = isReverse ? index - 1 : index + 1;
             }
         }
         
