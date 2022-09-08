@@ -10,6 +10,7 @@ namespace ProjectCard.Game.Controller
         {
             visual.sprite = AssetsContainer.Instance.GetCardAsset(id);
             visual.color = ThemeManager.Instance.CurrentTheme.cardColor;
+            LayoutElementId = id;
         }
     }
 }

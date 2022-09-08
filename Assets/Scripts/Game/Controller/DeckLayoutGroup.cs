@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
 using ProjectCard.Core.Entity;
 using ProjectCard.Game.Managers;
@@ -21,30 +20,108 @@ namespace ProjectCard.Game.Controller
                 elem.Initialize();
                 Slots.Add(elem);
                 elem.gameObject.SetActive(false);
-
-                elem.OnElementSelect += OnAnElementSelected;
-                elem.OnElementDrag += OnAnElementDragging;
-                elem.OnElementDrop += OnAnElementDropped;
+                SubscribeLayoutElement(elem);
             }
         }
 
-        private void OnAnElementSelected(DeckLayoutElementBase obj)
+        #region MoveSystem
+        private int _lastIndex = 0;
+        private void SubscribeLayoutElement(DeckLayoutElementBase element)
         {
-            var key = ActiveSlots.First(elem => elem.Value == obj).Key;
-            ActiveSlots.Remove(key);
-            Slots.Remove(obj);
-            ValidateLayout(true);
+            element.OnElementSelect += OnAnElementSelected;
+            element.OnElementDrag += OnAnElementDragging;
+            element.OnElementDrop += OnAnElementDropped;
         }
 
-        private void OnAnElementDragging(DeckLayoutElementBase arg1, Vector3 arg2)
+        private void OnAnElementSelected(DeckLayoutElementBase element)
         {
+            element.SetSortingOrder(999);
+            ActiveSlots.Remove(element.LayoutElementId);
+            Slots.Remove(element);
+            ValidateLayoutInOrder(true);
+        }
+
+        private void OnAnElementDragging(DeckLayoutElementBase element, float horizontal)
+        {
+            Slots[_lastIndex].GetComponentInChildren<Animator>().SetBool("right", false);
+            Slots[_lastIndex].GetComponentInChildren<Animator>().SetBool("left", false);
+
+            if (_lastIndex + 1 < Slots.Count)
+            {
+                Slots[_lastIndex + 1].GetComponentInChildren<Animator>().SetBool("right", false);
+                Slots[_lastIndex + 1].GetComponentInChildren<Animator>().SetBool("left", false);
+            }
             
+            var index = GetClosestIndex(horizontal);
+            
+            CalculatePositionAndRotation((float)index / (ActiveSlots.Count - 1), out var position, out var rotation);
+            element.SetRotation(rotation, true);
+
+            if (index == -1)
+            {
+                Slots[0].GetComponentInChildren<Animator>().SetBool("right", true);
+                _lastIndex = 0;
+            }
+            
+            else if (index == ActiveSlots.Count)
+            {
+                Slots[index - 1].GetComponentInChildren<Animator>().SetBool("left", true);
+                _lastIndex = index - 1;
+            }
+
+            else
+            {
+                var targetIndex = Math.Clamp(index + 1, 0, Slots.Count - 1);
+                Slots[index].GetComponentInChildren<Animator>().SetBool("left", true);
+                Slots[targetIndex].GetComponentInChildren<Animator>().SetBool("right", true);
+                
+                _lastIndex = index;
+            }
         }
         
-        private void OnAnElementDropped(DeckLayoutElementBase obj)
+        private void OnAnElementDropped(DeckLayoutElementBase element, float horizontal)
         {
+            Slots[_lastIndex].GetComponentInChildren<Animator>().SetBool("right", false);
+            Slots[_lastIndex].GetComponentInChildren<Animator>().SetBool("left", false);
+
+            if (_lastIndex + 1 < Slots.Count)
+            {
+                Slots[_lastIndex + 1].GetComponentInChildren<Animator>().SetBool("right", false);
+                Slots[_lastIndex + 1].GetComponentInChildren<Animator>().SetBool("left", false);
+            }
             
+            var index = GetClosestIndex(horizontal);
+
+            if (index == -1)
+            {
+                Slots.Insert(0, element);
+            }
+            
+            else if (index == ActiveSlots.Count)
+            {
+                Slots.Insert(index, element);
+            }
+
+            else
+            {
+                var targetIndex = Math.Clamp(index + 1, 0, ActiveSlots.Count);
+                Slots.Insert(targetIndex, element);
+            }
+            
+            ActiveSlots.Add(element.LayoutElementId, element);
+            ValidateLayoutInOrder(true);
         }
+
+        private int GetClosestIndex(float horizontal)
+        {
+            var offset = spacing * Limit * .75F;
+            var alpha = (horizontal / (spacing * offset) + 1) / 2F;
+            var closestIndex = Mathf.FloorToInt(alpha * ActiveSlots.Count);
+            closestIndex = Math.Clamp(closestIndex, -1, ActiveSlots.Count);
+            return closestIndex;
+        }
+
+        #endregion
 
         public override void Initialize(List<CardBase> dataset, Action onInitialized)
         {
@@ -93,21 +170,21 @@ namespace ProjectCard.Game.Controller
             }
         }
 
-        public override void ValidateLayoutInOrder()
+        public override void ValidateLayoutInOrder(bool shouldAnimate = false)
         {
             for (var i = 0; i < ActiveSlots.Count; i++)
             {
-                ValidateLayoutElement(Slots[i], i);
+                ValidateLayoutElement(Slots[i], i, shouldAnimate);
             }
         }
         
-        public override void ValidateLayoutElement(DeckLayoutElementBase element, int index)
+        public override void ValidateLayoutElement(DeckLayoutElementBase element, int index, bool shouldAnimate = false)
         {
             CalculatePositionAndRotation((float)index / (ActiveSlots.Count - 1), 
                 out var position, out var rotation);
             element.SetSortingOrder(index);
-            element.SetPosition(position);
-            element.SetRotation(rotation);
+            element.SetPosition(position, shouldAnimate);
+            element.SetRotation(rotation, shouldAnimate);
         }
 
         public override void ValidateLayoutElement(int layoutElementId, int sortingLayer, bool shouldAnimate)

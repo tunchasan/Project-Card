@@ -3,10 +3,11 @@ using UnityEngine;
 
 namespace ProjectCard.Game.Controller
 {
-    [RequireComponent(typeof(SpriteRenderer))]
     public abstract class DeckLayoutElementBase : MonoBehaviour, IMovable
     {
         [SerializeField] protected SpriteRenderer visual;
+        public int LayoutElementId { protected set; get; } = 0;
+
         public abstract void Initialize();
         public abstract void Initialize(int id);
         public abstract void UpdateVisual(Color color, float animDuration);
@@ -17,8 +18,8 @@ namespace ProjectCard.Game.Controller
         #region MoveSystem
 
         public Action<DeckLayoutElementBase> OnElementSelect;
-        public Action<DeckLayoutElementBase, Vector3> OnElementDrag;
-        public Action<DeckLayoutElementBase> OnElementDrop;
+        public Action<DeckLayoutElementBase, float> OnElementDrag;
+        public Action<DeckLayoutElementBase, float> OnElementDrop;
         public abstract void OnMouseDown();
         public abstract void OnMouseDrag();
         public abstract void OnMouseUp();

@@ -30,8 +30,8 @@ namespace ProjectCard.Game.Controller
         public abstract void UpdateLayoutTheme(ThemeData theme);
         public abstract void ValidateLayout(List<CardBase> elements);
         public abstract void ValidateLayout(bool shouldAnimate = false);
-        public abstract void ValidateLayoutInOrder();
-        public abstract void ValidateLayoutElement(DeckLayoutElementBase element, int index);
+        public abstract void ValidateLayoutInOrder(bool shouldAnimate = false);
+        public abstract void ValidateLayoutElement(DeckLayoutElementBase element, int index, bool shouldAnimate = false);
         public abstract void ValidateLayoutElement(int layoutElementId, int sortingLayer, bool shouldAnimate);
         public abstract void UpdateLayoutSpacingValue(float value);
 

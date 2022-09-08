@@ -62,12 +62,12 @@ namespace ProjectCard.Game.Controller
         public override void OnMouseDrag()
         {
             transform.position = GetMouseAsWorldPoint() + _mOffset;
-            OnElementDrag?.Invoke(this, transform.position);
+            OnElementDrag?.Invoke(this, transform.position.x);
         }
 
         public override void OnMouseUp()
         {
-            OnElementDrop?.Invoke(this);
+            OnElementDrop?.Invoke(this, transform.position.x);
         }
 
         #endregion
