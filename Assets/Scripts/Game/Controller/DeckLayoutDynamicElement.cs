@@ -45,6 +45,7 @@ namespace ProjectCard.Game.Controller
             #if !UNITY_EDITOR
             
             targetTransform.position = targetPosition;
+            OnElementDrag?.Invoke(this, targetTransform.position.x);
 
             #endif
         }
