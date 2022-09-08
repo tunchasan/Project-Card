@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using ProjectCard.Core.Entity;
 using ProjectCard.Game.Managers;
@@ -20,7 +21,29 @@ namespace ProjectCard.Game.Controller
                 elem.Initialize();
                 Slots.Add(elem);
                 elem.gameObject.SetActive(false);
+
+                elem.OnElementSelect += OnAnElementSelected;
+                elem.OnElementDrag += OnAnElementDragging;
+                elem.OnElementDrop += OnAnElementDropped;
             }
+        }
+
+        private void OnAnElementSelected(DeckLayoutElementBase obj)
+        {
+            var key = ActiveSlots.First(elem => elem.Value == obj).Key;
+            ActiveSlots.Remove(key);
+            Slots.Remove(obj);
+            ValidateLayout(true);
+        }
+
+        private void OnAnElementDragging(DeckLayoutElementBase arg1, Vector3 arg2)
+        {
+            
+        }
+        
+        private void OnAnElementDropped(DeckLayoutElementBase obj)
+        {
+            
         }
 
         public override void Initialize(List<CardBase> dataset, Action onInitialized)
@@ -57,7 +80,7 @@ namespace ProjectCard.Game.Controller
             }
         }
 
-        public override void ValidateLayout()
+        public override void ValidateLayout(bool shouldAnimate = false)
         {
             if(ActiveSlots.Count <= 1) return;
 
@@ -65,7 +88,7 @@ namespace ProjectCard.Game.Controller
             
             foreach (var elementId in ActiveSlots.Keys)
             {
-                ValidateLayoutElement(elementId, index, false);
+                ValidateLayoutElement(elementId, index, shouldAnimate);
                 index++;
             }
         }

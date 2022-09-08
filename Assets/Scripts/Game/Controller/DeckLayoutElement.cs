@@ -13,12 +13,10 @@ namespace ProjectCard.Game.Controller
             _visualAnimation?.Kill();
             _visualAnimation = DOTween.To(() => visual.color, x => visual.color = x, color, animDuration);
         }
-
         public override void SetSortingOrder(int order)
         {
             visual.sortingOrder = order;
         }
-
         public override void SetPosition(Vector3 targetPos, bool shouldAnimate = false)
         {
             _moveAnimation?.Kill();
@@ -31,7 +29,6 @@ namespace ProjectCard.Game.Controller
             
             transform.localPosition = targetPos;
         }
-
         public override void SetRotation(Vector3 targetRot, bool shouldAnimate = false)
         {
             _rotateAnimation?.Kill();
@@ -44,5 +41,35 @@ namespace ProjectCard.Game.Controller
             
             transform.localEulerAngles = targetRot;
         }
+
+        #region MoveSystem
+
+        private Vector3 _mOffset = Vector3.zero;
+        
+        public override void OnMouseDown()
+        {
+            _mOffset = transform.position - GetMouseAsWorldPoint();
+            OnElementSelect?.Invoke(this);
+        }
+        
+        private Vector3 GetMouseAsWorldPoint()
+        {
+            var mousePoint = Input.mousePosition;
+            return Camera.main.ScreenToWorldPoint(mousePoint);
+
+        }
+
+        public override void OnMouseDrag()
+        {
+            transform.position = GetMouseAsWorldPoint() + _mOffset;
+            OnElementDrag?.Invoke(this, transform.position);
+        }
+
+        public override void OnMouseUp()
+        {
+            OnElementDrop?.Invoke(this);
+        }
+
+        #endregion
     }
 }
