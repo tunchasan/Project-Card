@@ -18,7 +18,9 @@ namespace ProjectCard.Game.Managers
 
         public void PlayTransitionAnimation(bool isReverse = false)
         {
-            mainCamera.DOOrthoSize(isReverse ? 5F : .01F, 2F).SetEase(Ease.OutExpo);
+            var duration = isReverse ? 2F : 1F;
+            mainCamera.DOOrthoSize(isReverse ? 5F : .01F, duration)
+                .SetEase(isReverse ? Ease.OutExpo : Ease.InExpo);
         }
     }
 }

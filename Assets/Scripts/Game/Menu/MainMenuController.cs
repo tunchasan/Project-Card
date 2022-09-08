@@ -18,13 +18,14 @@ namespace ProjectCard.Game.Menu
 
             var currentAnimationAlpha = 0F;
             
-            DOTween.To(() => currentAnimationAlpha, x => currentAnimationAlpha = x, 1F, 3F)
+            DOTween.To(() => currentAnimationAlpha, x => currentAnimationAlpha = x, 1F, 1F)
                 .OnUpdate(() =>
                 {
                     playButton.anchoredPosition = Vector2.Lerp(currentPlayPos, targetPlayPos, currentAnimationAlpha);
                     quitButton.anchoredPosition = Vector2.Lerp(currentQuitPos, targetQuitPos, currentAnimationAlpha);
 
-                }).SetEase(Ease.OutExpo).OnComplete(()=> LevelManager.Instance.LoadGameScene());
+                }).SetEase(Ease.InCirc).OnComplete(() => LevelManager.Instance.LoadGameScene());
+
             
         }
     }
