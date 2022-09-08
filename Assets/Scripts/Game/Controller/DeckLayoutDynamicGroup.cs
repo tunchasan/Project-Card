@@ -101,7 +101,7 @@ namespace ProjectCard.Game.Controller
         }
         protected override int GetClosestIndex(float horizontal)
         {
-            var alpha = (horizontal / (Spacing * ValidateLayoutOffset()) + 1) / 2F;
+            var alpha = (horizontal / (Spacing * ValidateLayoutOffset() * transform.localScale.x) + 1) / 2F;
             var closestIndex = Mathf.FloorToInt(alpha * ActiveSlots.Count);
             closestIndex = Math.Clamp(closestIndex, -1, ActiveSlots.Count);
             return closestIndex;

@@ -131,7 +131,7 @@ namespace ProjectCard.Game.Controller
             var isReverse = theme.type == ThemeType.Theme1;
             var alpha = ActiveSlots.Count / (float) MaxSize;
             var animDuration = Mathf.Lerp(.75F, .25F, alpha);
-            var intervalDuration = Mathf.Lerp(.12F, .02F,alpha);
+            var intervalDuration = Mathf.Lerp(.1F, .02F,alpha);
             var waitForSeconds = new WaitForSeconds(intervalDuration);
             var index = isReverse ? ActiveSlots.Count - 1 : 0;
 
@@ -141,6 +141,8 @@ namespace ProjectCard.Game.Controller
                 yield return waitForSeconds;
                 index = isReverse ? index - 1 : index + 1;
             }
+            
+            ThemeManager.OnChangeThemeComplete?.Invoke();
         }
     }
 }

@@ -49,8 +49,7 @@ namespace ProjectCard.Game.Managers
                 {
                     background.sprite = CurrentTheme.backgroundAsset;
 
-                    DOTween.To(() => background.color, x => background.color = x, initialColor, AnimationDuration / 2F)
-                        .OnComplete(() => { OnChangeThemeComplete?.Invoke(); });
+                    DOTween.To(() => background.color, x => background.color = x, initialColor, AnimationDuration / 2F);
                 });
         }
         
