@@ -16,6 +16,7 @@ namespace ProjectCard.Game.Managers
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
+            Application.targetFrameRate = 60;
         }
 
         private void Start()

@@ -5,6 +5,7 @@ namespace ProjectCard.Game.Controller
     public abstract class DeckLayoutElementBase : MonoBehaviour
     {
         [SerializeField] protected SpriteRenderer visual;
+        protected Camera Camera = null;
         public int LayoutElementId { protected set; get; } = 0;
 
         public abstract void Initialize();

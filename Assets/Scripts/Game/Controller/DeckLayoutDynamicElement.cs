@@ -9,26 +9,26 @@ namespace ProjectCard.Game.Controller
         public Action<DeckLayoutDynamicElement> OnElementSelect;
         public Action<DeckLayoutDynamicElement, float> OnElementDrag;
         public Action<DeckLayoutDynamicElement, float> OnElementDrop;
-        private Vector3 _mOffset = Vector3.zero;
+        private Vector3 _offset = Vector3.zero;
 
         public DynamicElementAnimationBase AnimationController => animationController;
 
         public void OnMouseDown()
         {
-            _mOffset = transform.position - GetMouseAsWorldPoint();
+            _offset = transform.position - GetMouseAsWorldPoint();
             OnElementSelect?.Invoke(this);
         }
         
         private Vector3 GetMouseAsWorldPoint()
         {
             var mousePoint = Input.mousePosition;
-            return Camera.main.ScreenToWorldPoint(mousePoint);
+            return Camera.ScreenToWorldPoint(mousePoint);
 
         }
         public void OnMouseDrag()
         {
             var targetTransform = transform;
-            var targetPosition = GetMouseAsWorldPoint() + _mOffset;
+            var targetPosition = GetMouseAsWorldPoint() + _offset;
             
             #if UNITY_EDITOR
             

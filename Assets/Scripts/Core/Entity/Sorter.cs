@@ -24,7 +24,12 @@ namespace ProjectCard.Core.Entity
 
             return cards;
         }
-        // 1-2-3 = Generates sorted groupContainer which contains sub groups separately
+        
+        /// <summary>
+        /// 1-2-3 = Generates sorted groupContainer which contains sub groups separately
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <returns></returns>
         public static GroupContainer SortByStraight(this List<CardBase> cards)
         {
             // Time complexity : average O(nlogn) : worst-case O(n^2) - QuickSort
@@ -32,7 +37,12 @@ namespace ProjectCard.Core.Entity
 
             return cards.ProcessGroups(SortType.Straight);
         }
-        // 7-7-7 = Generates sorted groupContainer which contains sub groups separately
+        
+        /// <summary>
+        /// 7-7-7 = Generates sorted groupContainer which contains sub groups separately
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <returns></returns>
         public static GroupContainer SortByKind(this List<CardBase> cards)
         {
             // Time complexity : average O(nlogn) : worst-case O(n^2) - QuickSort

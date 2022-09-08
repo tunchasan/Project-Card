@@ -142,10 +142,5 @@ namespace ProjectCard.Game.Controller
                 index = isReverse ? index - 1 : index + 1;
             }
         }
-        
-        #if UNITY_EDITOR
-        private void OnValidate() { ValidateLayout(); }
-        
-        #endif
     }
 }
