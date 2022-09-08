@@ -69,12 +69,14 @@ namespace ProjectCard.Game.Managers
         {
             OnDrawCertainCardsRequest?.Invoke();
             deckText.text = $"DECK\n 52/11";
+            DisableUIElementsForSeconds();
         }
         public void OnClickRandomCardsRequest()
         {
             var value = (int) randomCardAmountSlider.value;
             OnDrawRandomCardsRequest?.Invoke(value);
             deckText.text = $"DECK\n 52/{(int)randomCardAmountSlider.value}";
+            DisableUIElementsForSeconds();
         }
         public void OnChangeSliderValue()
         {
@@ -107,6 +109,11 @@ namespace ProjectCard.Game.Managers
         public void DisableUIElements()
         {
             ValidateElementsStatus(false);
+        }
+        private void DisableUIElementsForSeconds()
+        {
+            DisableUIElements();
+            DOVirtual.DelayedCall(.5F, EnableUIElements);
         }
 
         private void UpdateErrorMessage(string message)

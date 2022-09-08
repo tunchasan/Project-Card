@@ -59,7 +59,7 @@ namespace ProjectCard.Core.Entity
         {
             return sortType switch
             {
-                SortType.Straight => card1.Id - card2.Id == 1,
+                SortType.Straight => card1.Id - card2.Id == 1 && card1.Suit == card2.Suit,
                 SortType.SameKind => card1.Kind == card2.Kind,
                 _ => false
             };
