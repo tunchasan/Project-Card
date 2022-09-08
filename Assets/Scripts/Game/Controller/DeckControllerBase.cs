@@ -5,12 +5,17 @@ using UnityEngine;
 
 namespace ProjectCard.Game.Controller
 {
-    [RequireComponent(typeof(DeckLayoutGroupBase))]
+    [RequireComponent(typeof(DeckLayoutDynamicGroup))]
     public abstract class DeckControllerBase : MonoBehaviour
     {
+        protected DeckLayoutDynamicGroupBase DeckLayoutDynamicGroup = null;
         protected DeckProviderBase DeckProvider = null;
-        protected DeckLayoutGroupBase DeckLayoutGroup = null;
         protected SessionBase Session = null;
+
+        protected virtual void Start()
+        {
+            Initialize();
+        }
         protected abstract void Initialize();
         public abstract void SortCardsRequest(SortType sortType);
         protected abstract void DrawCertainCardsRequest();
@@ -19,14 +24,12 @@ namespace ProjectCard.Game.Controller
 
         protected virtual void OnEnable()
         {
-            GameManager.OnGameStart += Initialize;
             UIManager.OnSortCardsRequest += SortCardsRequest;
             UIManager.OnDrawRandomCardsRequest += DrawRandomCardsRequest;
             UIManager.OnDrawCertainCardsRequest += DrawCertainCardsRequest;
         }
         protected virtual void OnDisable()
         {
-            GameManager.OnGameStart -= Initialize;
             UIManager.OnSortCardsRequest -= SortCardsRequest;
             UIManager.OnDrawRandomCardsRequest -= DrawRandomCardsRequest;
             UIManager.OnDrawCertainCardsRequest -= DrawCertainCardsRequest;

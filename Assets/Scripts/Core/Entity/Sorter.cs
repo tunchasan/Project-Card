@@ -43,8 +43,12 @@ namespace ProjectCard.Core.Entity
         // Smart
         public static GroupContainer SortBySmart(this List<CardBase> cards)
         {
-            var straightGroupContainer = SortByStraight(cards);
-            var sameKindGroupContainer = SortByKind(cards);
+            var elements = new List<CardBase>(cards);
+            var straightGroupContainer = SortByStraight(elements);
+            var sameKindGroupContainer = SortByKind(elements);
+
+            if (!straightGroupContainer.IsValid() || !sameKindGroupContainer.IsValid()) 
+                return new GroupContainer();
 
             var bestResult1 = FindBestResult(sameKindGroupContainer, SortType.Straight);
             var bestResult2 = FindBestResult(straightGroupContainer, SortType.SameKind);

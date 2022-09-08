@@ -1,5 +1,6 @@
 using System;
 using ProjectCard.Game.Utilities;
+using UnityEngine;
 
 namespace ProjectCard.Game.Managers
 {
@@ -11,6 +12,22 @@ namespace ProjectCard.Game.Managers
         public static Action OnGamePlay;
         public static Action OnGameQuit;
         public static Action<GameState> OnGameStateChange;
+        
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
+        private void Start()
+        {
+            OnGameStart?.Invoke();
+        }
+
+        public void QuitGame()
+        {
+            OnGameQuit?.Invoke();
+            Application.Quit();
+        }
 
         public void UpdateState(GameState state)
         {

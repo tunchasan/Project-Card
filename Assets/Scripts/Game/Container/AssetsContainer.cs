@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ProjectCard.Core.Entity;
+using ProjectCard.Game.Controller;
 using ProjectCard.Game.Managers;
 using ProjectCard.Game.SO;
 using ProjectCard.Game.Utilities;
@@ -11,16 +12,17 @@ namespace ProjectCard.Game.Container
     {
         private readonly Dictionary<int, Sprite> _cardAssets = new(DeckBase.Size);
         private readonly Dictionary<ThemeType, ThemeData> _themeAssets = new(ThemeManager.Size);
+        public DeckLayoutElementBase CardPrefab { private set; get; } = null;
 
         private void Awake()
         {
             Initialize();
+            DontDestroyOnLoad(gameObject);
         }
 
         private void Initialize()
         {
             LoadCardAssets();
-
             LoadThemeAssets();
         }
 
@@ -30,6 +32,8 @@ namespace ProjectCard.Game.Container
             {
                 _cardAssets.Add(i, Resources.Load<Sprite>($"Cards/Assets/{i}"));
             }
+            
+            CardPrefab = Resources.Load<DeckLayoutElementBase>("Prefabs/CardElement");
         }
 
         private void LoadThemeAssets()
@@ -37,7 +41,7 @@ namespace ProjectCard.Game.Container
             _themeAssets.Add(ThemeType.Theme1, Resources.Load<ThemeData>("Themes/Presets/Theme01"));
             _themeAssets.Add(ThemeType.Theme2, Resources.Load<ThemeData>("Themes/Presets/Theme02"));
         }
-
+        
         public ThemeData GetThemeAsset(ThemeType type)
         {
             return _themeAssets[type];

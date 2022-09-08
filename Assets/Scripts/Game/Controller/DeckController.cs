@@ -11,8 +11,8 @@ namespace ProjectCard.Game.Controller
     {
         protected override void Initialize()
         {
+            DeckLayoutDynamicGroup = GetComponent<DeckLayoutDynamicGroupBase>();
             DeckProvider = new DeckProvider();
-            DeckLayoutGroup = GetComponent<DeckLayoutGroupBase>();
             Session = new Session();
             Session.OnReceiveError += UIManager.Instance.DisplayErrors;
             
@@ -38,7 +38,7 @@ namespace ProjectCard.Game.Controller
             }
             
             if(Session.IsValidSession())
-                DeckLayoutGroup.ValidateLayout(Session.Data());
+                DeckLayoutDynamicGroup.ValidateLayout(Session.Data());
             else
                 ConditionalDebug.LogWarning($"Something went wrong during SortCardsRequest Process! - {Session.ErrorCode}");
         }
@@ -49,7 +49,7 @@ namespace ProjectCard.Game.Controller
             DeckProvider.DrawCertainCards(certainCards, Session);
             
             if(Session.IsValidSession())
-                DeckLayoutGroup.Initialize(Session.Data(), Display);
+                DeckLayoutDynamicGroup.Initialize(Session.Data(), Display);
             else
                 ConditionalDebug.LogWarning($"Something went wrong during DrawCertainCards Process! - {Session.ErrorCode}");
         }
@@ -58,7 +58,7 @@ namespace ProjectCard.Game.Controller
             DeckProvider.DrawRandomCards(cardAmounts, Session);
             
             if(Session.IsValidSession())
-                DeckLayoutGroup.Initialize(Session.Data(), Display);
+                DeckLayoutDynamicGroup.Initialize(Session.Data(), Display);
             else
                 ConditionalDebug.LogWarning($"Something went wrong during DrawRandomCards Process! - {Session.ErrorCode}");
         }

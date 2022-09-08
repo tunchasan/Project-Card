@@ -20,10 +20,9 @@ namespace ProjectCard.Game.Managers
         public static Action<ThemeData> OnChangeTheme;
         public static Action OnChangeThemeComplete;
 
-        private void Start()
+        private void Awake()
         {
             CurrentTheme = AssetsContainer.Instance.GetThemeAsset(ThemeType.Theme1);
-            GameManager.Instance.UpdateState(GameState.OnStart);
         }
 
         private void ChangeTheme()

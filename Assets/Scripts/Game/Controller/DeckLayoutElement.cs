@@ -41,35 +41,5 @@ namespace ProjectCard.Game.Controller
             
             transform.localEulerAngles = targetRot;
         }
-
-        #region MoveSystem
-
-        private Vector3 _mOffset = Vector3.zero;
-        
-        public override void OnMouseDown()
-        {
-            _mOffset = transform.position - GetMouseAsWorldPoint();
-            OnElementSelect?.Invoke(this);
-        }
-        
-        private Vector3 GetMouseAsWorldPoint()
-        {
-            var mousePoint = Input.mousePosition;
-            return Camera.main.ScreenToWorldPoint(mousePoint);
-
-        }
-
-        public override void OnMouseDrag()
-        {
-            transform.position = GetMouseAsWorldPoint() + _mOffset;
-            OnElementDrag?.Invoke(this, transform.position.x);
-        }
-
-        public override void OnMouseUp()
-        {
-            OnElementDrop?.Invoke(this, transform.position.x);
-        }
-
-        #endregion
     }
 }

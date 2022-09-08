@@ -42,6 +42,8 @@ namespace ProjectCard.Core.Entity
 
         public bool IsValid()
         {
+            if (Groups == null) return false;
+            
             if (Groups.Count == 0) return false;
 
             return Groups.Any(group => group.Type != SortType.None);

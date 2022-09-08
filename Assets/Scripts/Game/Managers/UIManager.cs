@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using ProjectCard.Core.Utilities;
 using TMPro;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace ProjectCard.Game.Managers
         [SerializeField] private TextMeshProUGUI sliderText = null;
         [SerializeField] private TextMeshProUGUI deckText = null;
         [SerializeField] private TextMeshProUGUI errorText = null;
+        [SerializeField] private CanvasGroup canvasGroup = null;
 
         public static Action OnChangeThemeRequest;
         public static Action<SortType> OnSortCardsRequest;
@@ -31,7 +33,16 @@ namespace ProjectCard.Game.Managers
         private void Start()
         {
             deckText.text = $"DECK\n 52/11";
+            AnimateCanvasGroup();
+            EnableUIElements();
         }
+
+        private void AnimateCanvasGroup(bool isReverse = false)
+        {
+            DOTween.To(() => canvasGroup.alpha, x => canvasGroup.alpha = x, 
+                isReverse ? 0F : 1F, .5F);
+        }
+        
         public void OnClickChangeThemeButton()
         {
             OnChangeThemeRequest?.Invoke();
@@ -137,13 +148,11 @@ namespace ProjectCard.Game.Managers
 
         private void OnEnable()
         {
-            GameManager.OnGamePlay += EnableUIElements;
             GameManager.OnGameQuit += DisableUIElements;
             ThemeManager.OnChangeThemeComplete += EnableUIElements;
         }
         private void OnDisable()
         {
-            GameManager.OnGamePlay -= EnableUIElements;
             GameManager.OnGameQuit -= DisableUIElements;
             ThemeManager.OnChangeThemeComplete -= EnableUIElements;
         }
