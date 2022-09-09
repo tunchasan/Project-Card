@@ -18,10 +18,9 @@ namespace ProjectCard.Core.Entity
         /// <summary>
         /// Places the elements into random indexes of the list.
         /// Complexity : Average O(n) | Worst-Case O(n)
-        /// Returns CardBase List
         /// </summary>
         /// <param name="cards"></param>
-        /// <returns></returns>
+        /// <returns>CardBase List</returns>
         public static List<CardBase> SortByShuffle(this List<CardBase> cards)
         {
             var n = cards.Count;
@@ -40,10 +39,9 @@ namespace ProjectCard.Core.Entity
         /// Loops the whole list to find possible matching groups that contain
         /// elements with sequential ids and of the same suit type.
         /// Complexity : Average [O(n) + O(nlogn)] | Worst-Case [O(n) + O(n^2)]
-        /// Returns GroupContainer.
         /// </summary>
         /// <param name="cards"></param>
-        /// <returns></returns>
+        /// <returns>GroupContainer</returns>
         public static GroupContainer SortByStraight(this List<CardBase> cards)
         {
             cards = cards.OrderBy(card => card.Id).ToList();
@@ -55,10 +53,9 @@ namespace ProjectCard.Core.Entity
         /// Loops the whole list to find possible matching groups that contain
         /// elements with the same kind and different suit types.
         /// Complexity : Average [O(n) + O(nlogn)] | Worst-Case [O(n) + O(n^2)]
-        /// Returns GroupContainer.
         /// </summary>
         /// <param name="cards"></param>
-        /// <returns></returns>
+        /// <returns>GroupContainer</returns>
         public static GroupContainer SortByKind(this List<CardBase> cards)
         {
             cards.Sort((a, b) => a.Kind.CompareTo(b.Kind));
@@ -71,7 +68,7 @@ namespace ProjectCard.Core.Entity
         /// Complexity : Average [6*O(n) + 2*O(nlogn)] | Worst-Case [2*O(n) + 3*O(n^2)]]
         /// </summary>
         /// <param name="cards"></param>
-        /// <returns></returns>
+        /// <returns>GroupContainer</returns>
         public static GroupContainer SortBySmart(this List<CardBase> cards)
         {
             var elements = new List<CardBase>(cards);
