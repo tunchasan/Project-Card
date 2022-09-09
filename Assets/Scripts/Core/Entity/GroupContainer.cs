@@ -39,7 +39,6 @@ namespace ProjectCard.Core.Entity
         {
             Groups.Remove(member);
         }
-
         public bool IsValid()
         {
             if (Groups == null) return false;

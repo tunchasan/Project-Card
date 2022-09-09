@@ -6,11 +6,22 @@ using Random = System.Random;
 
 namespace ProjectCard.Core.Entity
 {
+    /// <summary>
+    /// Sorter is a static class that provides functionality to sort algorithms such as Shuffle, Straight, Same Kind, and Smart.
+    /// The class aims to compute the sorting results very efficiently, avoiding Garbage Collection by using struct class
+    /// and rarely using new keywords and Linq.
+    /// </summary>
     public static class Sorter
     {
         private static readonly Random Random = new();
         
-        // Shuffle
+        /// <summary>
+        /// Places the elements into random indexes of the list.
+        /// Complexity : Average O(n) | Worst-Case O(n)
+        /// Returns CardBase List
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <returns></returns>
         public static List<CardBase> SortByShuffle(this List<CardBase> cards)
         {
             var n = cards.Count;
@@ -26,31 +37,41 @@ namespace ProjectCard.Core.Entity
         }
         
         /// <summary>
-        /// 1-2-3 = Generates sorted groupContainer which contains sub groups separately
+        /// Loops the whole list to find possible matching groups that contain
+        /// elements with sequential ids and of the same suit type.
+        /// Complexity : Average [O(n) + O(nlogn)] | Worst-Case [O(n) + O(n^2)]
+        /// Returns GroupContainer.
         /// </summary>
         /// <param name="cards"></param>
         /// <returns></returns>
         public static GroupContainer SortByStraight(this List<CardBase> cards)
         {
-            // Time complexity : average O(nlogn) : worst-case O(n^2) - QuickSort
             cards = cards.OrderBy(card => card.Id).ToList();
 
             return cards.ProcessGroups(SortType.Straight);
         }
         
         /// <summary>
-        /// 7-7-7 = Generates sorted groupContainer which contains sub groups separately
+        /// Loops the whole list to find possible matching groups that contain
+        /// elements with the same kind and different suit types.
+        /// Complexity : Average [O(n) + O(nlogn)] | Worst-Case [O(n) + O(n^2)]
+        /// Returns GroupContainer.
         /// </summary>
         /// <param name="cards"></param>
         /// <returns></returns>
         public static GroupContainer SortByKind(this List<CardBase> cards)
         {
-            // Time complexity : average O(nlogn) : worst-case O(n^2) - QuickSort
             cards.Sort((a, b) => a.Kind.CompareTo(b.Kind));
 
             return cards.ProcessGroups(SortType.SameKind);
         }
-        // Smart
+        
+        /// <summary>
+        /// Uses both sorting algorithms, Straight and the Same Kind, to find the possible best result.
+        /// Complexity : Average [6*O(n) + 2*O(nlogn)] | Worst-Case [2*O(n) + 3*O(n^2)]]
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <returns></returns>
         public static GroupContainer SortBySmart(this List<CardBase> cards)
         {
             var elements = new List<CardBase>(cards);

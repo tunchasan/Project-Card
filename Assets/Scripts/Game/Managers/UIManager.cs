@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using ProjectCard.Core.Utilities;
+using ProjectCard.Game.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

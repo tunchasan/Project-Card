@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+namespace ProjectCard.Game.Utilities
 {
-    private static object _lock = new object();
-    private static T _instance;
-
-    public static T Instance
+    public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        get
-        {
-            lock (_lock)
-            {
-                if (_instance == null) _instance = (T) FindObjectOfType(typeof(T));
+        private static object _lock = new object();
+        private static T _instance;
 
-                return _instance;
+        public static T Instance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    if (_instance == null) _instance = (T) FindObjectOfType(typeof(T));
+
+                    return _instance;
+                }
             }
         }
     }
