@@ -142,7 +142,7 @@ namespace ProjectCard.Game.Controller
                 index = isReverse ? index - 1 : index + 1;
             }
             
-            ThemeManager.OnChangeThemeComplete?.Invoke();
+            ThemeManager.Instance.CompleteChangeTheme();
         }
     }
 }

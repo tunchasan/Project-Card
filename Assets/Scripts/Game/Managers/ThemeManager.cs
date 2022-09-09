@@ -14,8 +14,9 @@ namespace ProjectCard.Game.Managers
         [SerializeField] private Camera playerCamera;
 
         public const int Size = 2; 
-        public float AnimationDuration { private set; get; } = 1.75F;
+        public float AnimationDuration { private set; get; } = 1.5F;
         public ThemeData CurrentTheme { private set; get; } = null;
+        public bool OnThemeChancing { private set; get; } = false;
 
         public static Action<ThemeData> OnChangeTheme;
         public static Action OnChangeThemeComplete;
@@ -34,9 +35,16 @@ namespace ProjectCard.Game.Managers
             AnimateTheme();
         }
 
+        public void CompleteChangeTheme()
+        {
+            OnChangeThemeComplete?.Invoke();
+            OnThemeChancing = false;
+        }
+
         private void AnimateTheme()
         {
             OnChangeTheme?.Invoke(CurrentTheme);
+            OnThemeChancing = true;
 
             var initialColor = CurrentTheme.backgroundColor;
             var targetColor = background.color;
@@ -51,6 +59,7 @@ namespace ProjectCard.Game.Managers
 
                     DOTween.To(() => background.color, x => background.color = x, initialColor, AnimationDuration / 2F);
                 });
+            
         }
         
         private void OnEnable()
