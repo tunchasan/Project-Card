@@ -1,6 +1,6 @@
 # Project: CARD
 
-**Project: CARD** is a Unity Project which provides functionality to sort playing cards as ***Shuffle, Straight, Same Kind***, and ***Smart*** in a very efficient way. 
+**Project: CARD** is a Unity Project which provides functionality to sort playing cards such as ***Shuffle, Straight, Same Kind***, and ***Smart*** in a very efficient way. 
 
 The project architecture is separated into three layers. The first layer is the **Core**, which contains the sorting algorithms and session management. The layer has been designed with ***pure C#***, and there isn't any Unity Engine library usage in the layer.
 
