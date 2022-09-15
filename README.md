@@ -59,5 +59,4 @@ The project also aims to achieve the **best possible optimization.** At this poi
 ![Theme](https://github.com/tunchasan/Project-Card/blob/756bf9e8ab1dbb07ac00f09d4f09b226b7968718/Recordings/Gifts/Theme.gif)
 
 ### Architecture
-
 ![Project Card](https://user-images.githubusercontent.com/39636292/190354011-943bf0ae-5073-4c2e-bb7c-387e86b4418a.png)
